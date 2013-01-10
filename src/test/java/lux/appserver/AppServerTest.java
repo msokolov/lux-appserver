@@ -40,7 +40,7 @@ public class AppServerTest {
     public void testServerRoot() throws Exception {
         String path = (APP_SERVER_PATH + "/");
         WebResponse response = httpclient.getResponse(path);
-        assertEquals (404, response.getResponseCode());
+        assertEquals (403, response.getResponseCode());
     }
 
     @Test

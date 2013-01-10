@@ -6,16 +6,19 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.mortbay.jetty.servlet.ServletHandler;
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.servlet.ServletHandler;
 
 public class AppHandler extends ServletHandler {
     
-    public void handle(String target, HttpServletRequest request, HttpServletResponse response, int dispatch) throws IOException, ServletException
+    @Override
+    public void doHandle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
         if (request.getRequestURI().matches(".*\\.xq.*")) {
-            getServlet (AppServer.LUX_APP_FORWARDER).handle(request, response);
+            getServlet (AppServer.LUX_APP_FORWARDER).handle(baseRequest, request, response);
+            baseRequest.setHandled(true);
         } else {
-            getServlet (AppServer.DEFAULT).handle(request, response);
+            getServlet (AppServer.DEFAULT).handle(baseRequest, request, response);
         }
     }
 }
