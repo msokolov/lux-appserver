@@ -6,8 +6,9 @@ declare function layout:render-nav ($current-url as xs:string)
 {
 let $nav := (
   <item url="{$config:root-url}browse.xqy">source</item>,
-(:  <item url="{$config:root-url}index.xqy">search</item>, :)
-  <item url="{$config:root-url}maven-get.xqy">maven</item>
+  <item url="{$config:root-url}index.xqy">search</item>, 
+  <item url="{$config:root-url}read-ibiblio.xqy">load shakespeare</item>
+(:  <item url="{$config:root-url}maven-get.xqy">maven</item> :)
 )
 return <div><ul class="hlist">{
   for $item in $nav 

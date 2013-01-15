@@ -45,7 +45,7 @@ ul.hlist li.selected { display: inline; background: #eeee22; }
 #search-results { list-style: none; margin-left: 3em; padding-left: 0 }
 #search-results a { text-decoration: none; color: black }
 #search-results a:hover { text-decoration: underline }
-#search-results li { margin-bottom: 1em }
+#search-results li { margin-bottom: 0.25em }
 
 #pagination { margin-left: 3em; width: 400px }
 

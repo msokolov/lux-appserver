@@ -27,7 +27,7 @@ let $body :=
       return
       <div>
         <input type="checkbox" name="selection" value="{$abs-file}" />
-        <image src="/lux/img/{if ($is-dir) then 'folder' else 'document'}.png" />
+        <image src="/img/{if ($is-dir) then 'folder' else 'document'}.png" />
         <span class="file">{
           if ($is-dir) then 
           <a href="{$uri}/{$file}">{$file}</a>
