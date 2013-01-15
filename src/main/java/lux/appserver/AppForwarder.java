@@ -91,7 +91,6 @@ public class AppForwarder extends ProxyServlet {
         // Is this a request for some xquery? (could be .xq, .xqy, .xql, .xqm, .xquery, etc)
         int idot = url.indexOf(".xq");
         if (idot > 0) {
-            String ext = url.substring(idot + 1);
             String xquery;
             String pathInfo=null;
             
@@ -99,7 +98,7 @@ public class AppForwarder extends ProxyServlet {
             int islash = url.indexOf('/', idot);
             int xqueryEnd;
             if (islash > 0) {
-                pathInfo = ext.substring(islash);
+                pathInfo = url.substring(islash);
                 xqueryEnd = islash;
             } else {
                 xqueryEnd = url.length();
