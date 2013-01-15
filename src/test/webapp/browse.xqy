@@ -5,19 +5,20 @@ declare namespace file="http://expath.org/ns/file";
 declare namespace demo="http://luxproject.net/demo";
 
 import module namespace layout="http://luxproject.net/demo/layout" at "layout.xqy";
+import module namespace config="http://luxproject.net/demo/config" at "config.xqy";
 
 declare variable $lux:http as document-node() external;
 
-let $path := ($lux:http/http/path-extra, '.')[. ne ''][1]
+let $path := ($lux:http/http/path-info, '.')[. ne ''][1]
 let $dir := if (substring($path,1,1) eq '/') then substring($path, 2) else $path
 let $dirname := tokenize($dir, '/')[last()]
-let $uri := $lux:http/http/@uri
+let $uri := concat('/browse.xqy', $lux:http/http/path-info)
 let $parent := replace ($uri, "/[^/]+$", "")
 let $files := file:list ($dir)
 let $body := 
 <div id="browse-list">
   <p><a href="{$parent}">{$parent}</a>/{$dirname}</p>
-  <form action="/lux/load.xqy" method="post">
+  <form action="/load.xqy" method="post">
     <p><input type="submit" value="load" /></p>
     {
     for $file in $files
@@ -37,4 +38,4 @@ let $body :=
     </div>
   }</form>
 </div>
-return layout:outer ($lux:http/http/@uri, $body)
+return layout:outer ('/browse.xqy', $body)

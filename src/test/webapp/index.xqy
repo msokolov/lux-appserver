@@ -2,6 +2,7 @@ xquery version "1.0";
 
 declare namespace demo="http://luxproject.net/demo";
 
+import module namespace config="http://luxproject.net/demo/config" at "config.xqy";
 import module namespace layout="http://luxproject.net/demo/layout" at "layout.xqy";
 import module namespace search="http://luxproject.net/search" at "search-lib.xqy";
 
@@ -66,7 +67,7 @@ let $body :=
     }
   </body>/*
 
-return layout:outer($lux:http/http/@uri, $body)
+return layout:outer('/index.xqy', $body)
 };
 
 demo:search()

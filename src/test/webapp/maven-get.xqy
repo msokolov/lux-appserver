@@ -3,8 +3,8 @@ xquery version "1.0";
 declare namespace lux="http://luxproject.net";
 declare namespace maven="http://luxproject.net/maven";
 
-import module namespace layout="http://luxproject.net/layout" at "src/main/webapp/layout.xqy";
-import module namespace search="http://luxproject.net/search" at "src/main/webapp/search-lib.xqy";
+import module namespace layout="http://luxproject.net/demo/layout" at "layout.xqy";
+import module namespace search="http://luxproject.net/search" at "search-lib.xqy";
 import module namespace http="http://expath.org/ns/http-client";
 
 declare variable $lux:http as document-node() external;
@@ -77,7 +77,7 @@ declare function maven:search-maven ()
     { search:javascript-postamble () }
     </body>/*
 
-    return layout:outer($lux:http/http/@uri, $body)
+    return layout:outer('/maven-get.xqy', $body)
 };
 
 maven:search-maven()
