@@ -60,6 +60,7 @@ public class AppServer {
         
         server = new Server(port);
         ServletContextHandler root = new ServletContextHandler(server, context);
+        root.setWelcomeFiles(new String[] { "index.xqy" });
         root.setServletHandler(handler);
     }
     
