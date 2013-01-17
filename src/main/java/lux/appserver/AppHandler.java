@@ -16,9 +16,9 @@ public class AppHandler extends ServletHandler {
     {
         if (request.getRequestURI().matches(".*\\.xq.*")) {
             getServlet (AppServer.LUX_APP_FORWARDER).handle(baseRequest, request, response);
-            baseRequest.setHandled(true);
         } else {
             getServlet (AppServer.DEFAULT).handle(baseRequest, request, response);
         }
+        baseRequest.setHandled(true);
     }
 }
