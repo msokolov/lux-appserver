@@ -59,7 +59,7 @@ declare function search:type-control ($params as element(param)*)
   let $options := 
   for $t in lux:field-terms ("doctype_s")
   return <option value="{$t}">{$t}</option>
-  return search:select-control ("type", "type", $options, $type)
+  return search:select-control ("type", "type", (<option/>, $options), $type)
 };
 
 declare function search:search-controls ($params as element(param)*) 

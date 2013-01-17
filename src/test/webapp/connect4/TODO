@@ -1,0 +1,19 @@
+* joining
+** assign colors to players when joining
+** join the second player
+** join more players
+* gameplay
+** add player parameter to view screen
+** drop a circle
+*** capture mouseclicks on grid
+when player is current and game is not complete
+*** update the stored game, and current player, and redisplay
+* game management
+** detect completion
+*** mark complete games
+** filter game list
+*** by player
+*** by completion status
+** provide win/loss stats
+* AI
+** random AI

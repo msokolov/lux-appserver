@@ -10,7 +10,8 @@ declare function demo:load-from-http ($url as xs:string)
 {
   let $request := <http:request method="get" href="{$url}" />
   let $response := http:send-request ($request)
-  return $response[2]
+  let $log := lux:log ($response[2]/descendant::TITLE[1], "debug")
+  return ($log, $response[2])
 };
 
 declare function demo:load-url ($url as xs:string)
@@ -25,28 +26,30 @@ as xs:string*
     let $doctype as xs:string := name($doc/*)
     let $load-xsl as xs:string := concat ("file:", $doctype, "-load.xsl")
     return if (doc-available ($load-xsl)) then
-      demo:transform-load ($doc, doc($load-xsl))
+      demo:transform-load ($url, $doc, doc($load-xsl))
     else
-      demo:default-load ($doc)
+      demo:default-load ($url, $doc)
 };
 
-declare function demo:transform-load ($doc as document-node(), $xsl as document-node())
+declare function demo:transform-load ($url as xs:string, $doc as document-node(), $xsl as document-node())
   as xs:string
 {
-    let $basename := replace($doc/base-uri(), "^.*/(.*)\.xml", "$1")
+    let $basename := replace($url, "^.*/(.*)\.xml", "$1")
     let $uri := concat ("/", $basename, ".xml")
+    let $uri2 := concat ($uri, lux:log(("insert transformed ", $uri), "debug"))
     let $transformed := lux:transform ($xsl, $doc, ("uri-base", $basename))
-    return (lux:insert ($uri, $transformed), $uri)
+    return (lux:insert ($uri, $transformed), $uri2)
 };
 
-declare function demo:default-load ($doc as document-node())
+declare function demo:default-load ($url as xs:string, $doc as document-node())
   as xs:string
 {
-    let $basename := replace($doc/base-uri(), "^.*/(.*)\.xml", "$1")
+    let $basename := replace($url, "^.*/(.*)\.xml", "$1")
     return
     for $e at $i in $doc/*/* 
     let $uri := concat ($basename, "-", $i, ".xml")
-    return (lux:insert ($uri, $e), $uri)
+    let $uri2 := concat ($uri, lux:log(("insert default ", $uri), "debug"))
+    return (lux:insert ($uri, $e), $uri2)
 };
 
 declare function demo:load-document ()

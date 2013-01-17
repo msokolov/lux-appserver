@@ -18,16 +18,16 @@ declare function demo:search-results ($query, $start as xs:integer, $page-size a
 {
   for $doc in subsequence(lux:search ($query, (), $sort), $start, $page-size)
   let $doctype := name($doc/*)
-  let $stylesheet-name := concat("file:src/main/webapp/", $doctype, "-result.xsl")
+  let $stylesheet-name := concat("file:", $doctype, "-result.xsl")
   let $result-markup := 
     if (doc-available ($stylesheet-name)) then
-      lux:transform (doc($stylesheet-name), $doc)
+      lux:transform (doc($stylesheet-name), $doc, ("query", $query))
     else
       let $uri := base-uri ($doc)
       return
         if (starts-with($uri, "/")) then
-        <a href="view.xqy{$doc/base-uri()}">{$doc/base-uri()}</a>
-      else <a href="view.xqy/{$doc/base-uri()}">{$doc/base-uri()}</a>
+        <a href="view.xqy{$uri}">{$uri}</a>
+      else <a href="view.xqy/{$uri}">{$uri}</a>
     return <li>{$result-markup}</li>
 };
 

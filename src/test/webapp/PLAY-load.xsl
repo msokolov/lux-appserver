@@ -52,7 +52,7 @@
           <xsl:number />
         </xsl:when>
         <xsl:otherwise>
-          <xsl:number count="LINE[not(ancestor::SPEECH)]" from="ancestor::ACT" level="any">
+          <xsl:number count="LINE[not(ancestor::SPEECH)]" from="ACT" level="any" />
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>

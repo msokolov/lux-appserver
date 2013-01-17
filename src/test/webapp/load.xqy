@@ -40,4 +40,4 @@ let $result := if ($erase-all) then
   <p>Erase all not yet supported</p>
 else
   demo:load()
-return layout:outer ($lux:http/http/@uri, $result)
+return layout:outer ('/', $result)

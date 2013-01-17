@@ -7,7 +7,7 @@ import module namespace layout="http://luxproject.net/demo/layout" at "layout.xq
 
 declare variable $lux:http as document-node() external;
 
-let $path := $lux:http/http/path-extra
+let $path := $lux:http/http/path-info
 let $doc := if (doc-available ($path)) then doc($path) else
   if (starts-with ($path, "/")) then doc (substring($path, 2)) else ()
 let $doctype := name($doc/*)
