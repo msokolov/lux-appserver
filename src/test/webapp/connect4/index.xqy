@@ -3,6 +3,7 @@ xquery version "1.0";
 declare namespace c4="http://falutin.net/connect4";
 
 import module namespace layout="http://falutin.net/connect4/layout" at "layout.xqy";
+import module namespace util="http://falutin.net/connect4/util" at "util.xqy";
 
 declare variable $lux:http as document-node() external;
 
@@ -10,16 +11,16 @@ declare variable $lux:http as document-node() external;
     
 declare function c4:list-game ($game as element(c4:game)) {
 <li>
-  <a href="view.xqy?id={$game/@id}">{
+  <a href="view.xqy?game={$game/@id}">{
     string-join ($game/c4:players/c4:player, ' vs. '),
     $game/@id/string()
   }</a>
   {
     if (not($game/@complete)) 
       then
-      <form action="play.xqy" style="display:inline">
-        <input type="submit" value="play as" />
-        <input type="hidden" name="id" value="{$game/@id}" />
+      <form action="join.xqy" style="display:inline">
+        <input type="submit" value="join as" />
+        <input type="hidden" name="game" value="{$game/@id}" />
         <input type="text" name="player" size="10" />
       </form>
     else
@@ -31,8 +32,10 @@ declare function c4:list-game ($game as element(c4:game)) {
 };
 
 declare function c4:main() {
+  let $error := util:param($lux:http, "error")
   let $body := 
   <div>
+    <div>{if ($error) then <p class="error">{$error}</p> else ()}</div>
     <form action="start.xqy" onsubmit="return validate()">
     Start a new game as player: 
     <input type="text" name="player1" id="player1" />
