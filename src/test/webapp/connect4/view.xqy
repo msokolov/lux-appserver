@@ -23,7 +23,7 @@ declare function c4:main() {
   let $game := collection()/c4:game[@id=$game-id]
   let $player-name := util:param($lux:http, 'player')
   let $player := $game/c4:players/c4:player[.=$player-name]
-  let $active := $game/c4:players/c4:player[@current="yes"]
+  let $active := $game/c4:players/c4:player[1]
   let $body := 
   <div>
     <h2>Game: {c4:players ($game, $player), " started at ", util:formatDateTime($game-id)}
@@ -38,16 +38,23 @@ declare function c4:main() {
       return <tr>{
       for $cell at $i in $row/c4:cell return
       <td class="circle" col="{$i}">{
-        let $color := $game/c4:players/c4:player[.=$cell]/@color
+        let $color := $cell/string()
         where $color 
-        return attribute style { "background: {$color};" }
+        return attribute style { concat ("background: ", $color, "};") }
       }</td>
       }</tr>
     }</table>
     <div id="turn">{
       if ($player is $active) then
         (attribute active { "true" }, "Your turn" )
-      else concat($active, "'s turn")}</div>
+      else if ($active) then
+        concat($active, "'s turn")
+      else
+        "Waiting for some competition to show up"
+    }</div>
+    <p>player={$player} active={$active}
+    </p>
+    <textarea rows="8" cols="132">{$game}</textarea>
     <script src="../js/jquery-1.8.2.min.js"></script>
     <script src="scripts.js"></script>
   </div>

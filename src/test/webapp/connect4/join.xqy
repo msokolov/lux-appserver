@@ -10,12 +10,17 @@ declare variable $lux:http as document-node() external;
 declare function c4:game-add-user($game as element(c4:game), $name as xs:string)
   as element(c4:game)
 {
+  let $active := not($game/c4:players/c4:player/@active="yes")
+  return
   <c4:game>{
     $game/@id, 
     attribute modified { current-dateTime() },
     <c4:players>{
       $game/c4:players/c4:player,
-      <c4:player color="#ff0">{$name}</c4:player>
+      <c4:player color="#ff0">{
+        if ($active) then attribute active {"yes"} else (),
+        $name
+      }</c4:player>
     }</c4:players>,
     $game/c4:grid
   }</c4:game>
