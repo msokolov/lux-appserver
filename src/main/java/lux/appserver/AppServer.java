@@ -67,6 +67,7 @@ public class AppServer {
             xqueryForward.setServletPath ("/solr");
             xqueryForward.setForwardPath ("/solr/lux");
             xqueryForward.setSolrPort (port);
+            handler.setSolrWebapp (luxWebapp);
             // server.setHandler(webapp);
         }
 

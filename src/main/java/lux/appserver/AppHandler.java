@@ -8,13 +8,19 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.servlet.ServletHandler;
+import org.eclipse.jetty.webapp.WebAppContext;
 
 public class AppHandler extends ServletHandler {
+    
+    private WebAppContext solrWebapp;
     
     @Override
     public void doHandle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
-        if (request.getRequestURI().matches(".*\\.xq.*")) {
+        if (request.getRequestURI().startsWith("/solr")) {
+            solrWebapp.doHandle(target, baseRequest, request, response);
+        }
+        else if (request.getRequestURI().matches(".*\\.xq.*")) {
             getServlet (AppServer.LUX_APP_FORWARDER).handle(baseRequest, request, response);
         } else {
             getServlet (AppServer.DEFAULT).handle(baseRequest, request, response);
@@ -33,4 +39,13 @@ public class AppHandler extends ServletHandler {
             doHandle (target, baseRequest, request, response);
         }
     }
+
+    public WebAppContext getSolrWebapp() {
+        return solrWebapp;
+    }
+
+    public void setSolrWebapp(WebAppContext solrWebapp) {
+        this.solrWebapp = solrWebapp;
+    }
+
 }

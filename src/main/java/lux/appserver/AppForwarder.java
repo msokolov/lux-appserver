@@ -41,7 +41,11 @@ public class AppForwarder extends ProxyServlet {
                     p = "file:/" + p;
                 } else {
                     try {
-                        p = "file://localhost" + new File(p).getCanonicalPath().replace('\\', '/');
+                        p = new File(p).getCanonicalPath().replace('\\', '/');
+                        if (! p.startsWith("/")) {
+                            p = '/' + p;
+                        }
+                        p = "file://localhost" + p;
                     } catch (IOException e) {
                         throw new ServletException ("Configured resourceBase does not exist: " + p);
                     }
