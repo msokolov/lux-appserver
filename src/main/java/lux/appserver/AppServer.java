@@ -41,6 +41,10 @@ public class AppServer {
     }
     
     public AppServer (String ... argv) {
+        
+        handleProperties();
+        handleArguments(argv);
+        
         AppHandler handler = new AppHandler();
         
         AppForwarder xqueryForward = new AppForwarder();
@@ -54,8 +58,6 @@ public class AppServer {
         resourcesHolder.setName(DEFAULT);
         handler.addServlet(resourcesHolder);
 
-        handleProperties();
-        handleArguments(argv);
 
         resourcesHolder.setInitParameter("resourceBase", resourceBase);
         appForwarderHolder.setInitParameter("resourceBase", resourceBase);
@@ -93,17 +95,24 @@ public class AppServer {
         } catch (IOException e) {
             error (e.getMessage());
         }
-        if (props.containsKey(LUX_APPSERVER_PORT)) {
-           setPort (props.getProperty(LUX_APPSERVER_PORT));
-        }
-        if (props.containsKey(LUX_SOLR_URL)) {
-            setSolrURL(props.getProperty(LUX_SOLR_URL));
-        }
-        if (props.containsKey(LUX_RESOURCE_BASE)) {
-            resourceBase = props.getProperty(LUX_RESOURCE_BASE);
-        }
-        if (props.containsKey(LUX_CONTEXT)) {
-            context = props.getProperty(LUX_CONTEXT);
+        for (Object o : props.keySet()) {
+            String pname = o.toString();
+            String value = props.getProperty(pname);
+            if (pname.equals(LUX_APPSERVER_PORT)) {
+                setPort (value);
+            }
+            else if (pname.equals(LUX_SOLR_URL)) {
+                setSolrURL(value);
+            }
+            else if (pname.equals(LUX_RESOURCE_BASE)) {
+                resourceBase = value;
+            }
+            else if (pname.equals(LUX_CONTEXT)) {
+                context = value;
+            }
+            else {
+                System.setProperty(pname, value);
+            }
         }
     }
 
