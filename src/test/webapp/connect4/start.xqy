@@ -33,7 +33,7 @@ declare function c4:start-game()
   let $body := 
   <div>
     { $insert }
-    New game created for { $name }; <a href="view.xqy?game={$dtm}&player={$name}">proceed to game</a>
+    New game created for { $name }; <a href="view.xqy?game={$dtm}&amp;player={$name}">proceed to game</a>
   </div>
   return layout:outer('/connect4/start.xqy', $body)
 };

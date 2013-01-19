@@ -12,6 +12,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.webapp.WebAppContext;
 
 public class AppServer {
     
@@ -30,6 +31,7 @@ public class AppServer {
     
     private ServletHolder appForwarderHolder;
     private ServletHolder resourcesHolder;
+    private static WebAppContext luxWebapp;
     private Server server;
     
     public static void main (String ... argv) throws Exception {
@@ -58,10 +60,22 @@ public class AppServer {
         resourcesHolder.setInitParameter("resourceBase", resourceBase);
         appForwarderHolder.setInitParameter("resourceBase", resourceBase);
         
+        if (appForwarderHolder.getInitParameter("solr-host") == null) {
+            // embedded solr war:
+            // FIXME: expose these paths via configuration?
+            luxWebapp = new WebAppContext(handler, "src/main/webapp", "/solr");
+            xqueryForward.setServletPath ("/solr");
+            xqueryForward.setForwardPath ("/solr/lux");
+            xqueryForward.setSolrPort (port);
+            // server.setHandler(webapp);
+        }
+
         server = new Server(port);
+
         ServletContextHandler root = new ServletContextHandler(server, context);
         root.setWelcomeFiles(new String[] { "index.xqy" });
         root.setServletHandler(handler);
+        
     }
     
     // read properties from lux.properties in the current directory, if it exists

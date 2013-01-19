@@ -21,4 +21,16 @@ public class AppHandler extends ServletHandler {
         }
         baseRequest.setHandled(true);
     }
+    
+    @Override
+    public void doScope(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException
+    {
+        if (request.getRequestURI().startsWith ("/solr")) {
+            super.doScope(target, baseRequest, request, response);
+        } else {
+            // bypass the normal processing of filter and servlet matches
+            doHandle (target, baseRequest, request, response);
+        }
+    }
 }

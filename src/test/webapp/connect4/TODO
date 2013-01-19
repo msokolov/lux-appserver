@@ -1,11 +1,7 @@
 * joining
-** assign colors to players when joining
-** join the second player
 ** join more players
 * gameplay
-** add player parameter to view screen
 ** drop a circle
-*** capture mouseclicks on grid
 when player is current and game is not complete
 *** update the stored game, and current player, and redisplay
 * game management
@@ -17,3 +13,6 @@ when player is current and game is not complete
 ** provide win/loss stats
 * AI
 ** random AI
+** better AI
+* optimize collection()/path/
+* package

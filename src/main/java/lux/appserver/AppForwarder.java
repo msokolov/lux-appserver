@@ -20,12 +20,12 @@ import org.eclipse.jetty.servlets.ProxyServlet;
  * as the value of lux.pathInfo.  
  */
 public class AppForwarder extends ProxyServlet {
-    
+
     public static final String LUX_PATHINFO= "lux.pathInfo";
     public static final String LUX_XQUERY = "lux.xquery";
     
     private String solrHost="localhost";
-    private String solrPort="80";
+    private int solrPort=80;
     private String resourceBase = "";
     private String servletPath = "/";
     private String forwardPath = "/lux";
@@ -41,7 +41,7 @@ public class AppForwarder extends ProxyServlet {
                     p = "file:/" + p;
                 } else {
                     try {
-                        p = "file:/" + new File(p).getCanonicalPath().replace('\\', '/');
+                        p = "file://localhost" + new File(p).getCanonicalPath().replace('\\', '/');
                     } catch (IOException e) {
                         throw new ServletException ("Configured resourceBase does not exist: " + p);
                     }
@@ -63,7 +63,7 @@ public class AppForwarder extends ProxyServlet {
         }
         p = config.getInitParameter("solr-port");
         if (p != null) {
-            solrPort = p;
+            solrPort = Integer.valueOf(p);
         }
         // import a logger jar?
         System.out.println ("Lux AppServer startup resourceBase=" + resourceBase + "; servlet path=" + servletPath);
@@ -129,7 +129,47 @@ public class AppForwarder extends ProxyServlet {
         // else: this is a local resource - don't translate
         return new HttpURI(scheme+"://" + serverName + ":"+ serverPort + uri);
     }
+    
+    public String getSolrHost() {
+        return solrHost;
+    }
 
+    public void setSolrHost(String solrHost) {
+        this.solrHost = solrHost;
+    }
+
+    public int getSolrPort() {
+        return solrPort;
+    }
+
+    public void setSolrPort(int solrPort) {
+        this.solrPort = solrPort;
+    }
+
+    public String getResourceBase() {
+        return resourceBase;
+    }
+
+    public void setResourceBase(String resourceBase) {
+        this.resourceBase = resourceBase;
+    }
+
+    public String getServletPath() {
+        return servletPath;
+    }
+
+    public void setServletPath(String servletPath) {
+        this.servletPath = servletPath;
+    }
+
+    public String getForwardPath() {
+        return forwardPath;
+    }
+
+    public void setForwardPath(String forwardPath) {
+        this.forwardPath = forwardPath;
+    }
+    
 }
 
 /* This Source Code Form is subject to the terms of the Mozilla Public
