@@ -1,0 +1,1 @@
+java -cp target/lux-appserver-0.0.1-SNAPSHOT.jar;target/dependency/\* lux.appserver.AppServer -p 8080 -c / -r src/test/webapp
