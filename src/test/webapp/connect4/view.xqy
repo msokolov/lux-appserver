@@ -9,8 +9,9 @@ declare variable $lux:http as document-node() external;
 
 declare function c4:players($game as element(c4:game), $user as element(c4:player)?) {
   for $player at $i in $game/c4:players/c4:player
-  let $p := if ($user) then string($player) else 
-  <a href="view.xqy?game={$game/@id}&amp;player={$player}">{string($player)}</a>
+  let $pdisplay := if ($i eq 1) then <i>{$player/string()}</i> else $player/string()
+  let $p := if ($user) then $pdisplay else 
+  <a href="view.xqy?game={$game/@id}&amp;player={$player}">{$pdisplay}</a>
   return if ($i eq 1) then $p else (" vs. ", $p)
 };
 
@@ -22,12 +23,15 @@ declare function c4:main() {
   let $game-id := util:param ($lux:http, 'game')
   let $game := collection()/c4:game[@id=$game-id]
   let $player-name := util:param($lux:http, 'player')
-  let $player := $game/c4:players/c4:player[.=$player-name]
-  let $active := $game/c4:players/c4:player[1]
+  let $players := $game/c4:players/c4:player
+  let $player := $players[.=$player-name]
+  let $active := if (count($players) gt 1) then $game/c4:players/c4:player[1] else ()
+  let $error := util:param($lux:http, "error")
   let $body := 
   <div>
     <h2>Game: {c4:players ($game, $player), " started at ", util:formatDateTime($game-id)}
     </h2>
+    <div>{if ($error) then <p class="error">{$error}</p> else ()}</div>
     <form action="play.xqy" method="post" name="play">
       <input type="hidden" name="player" value="{$player-name}" />
       <input type="hidden" name="game" value="{$game-id}" />
