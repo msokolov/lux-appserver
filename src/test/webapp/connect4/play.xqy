@@ -16,7 +16,7 @@ declare function c4:place-circle (
   let $iplayer := count ($game/c4:players/c4:player[. << $player]) + 1
   let $log := lux:log (count($game/c4:grid/c4:row/c4:cell[$col][empty(node())]), "info")
   let $selected := ($game/c4:grid/c4:row/c4:cell[$col][empty(node())])[last()]
-  return if (not($selected or $log)) then util:error ("There's no space left in that column - try again") else
+  return if (not($selected or $log)) then "There's no space left in that column - try again" else
   let $updated-game := 
   <c4:game>{
     $game/@id, 
@@ -58,9 +58,9 @@ declare function c4:play ()
   else
     if (not(number($col)) or xs:int($col) lt 1 or xs:int($col) gt count($game/c4:grid/c4:row[1]/c4:cell)) then util:error (concat("Invalid column: ", $col))
   else
-    let $update := c4:place-circle ($game, $player, xs:int($col))
-    return util:redirect (<a href="view.xqy?game={$game-id, $update}&amp;player={$player-name}"/>/@href)
-    (:return layout:outer ("play.xqy", <textarea rows="8" cols="132">{$update}</textarea>):)
+    let $error := c4:place-circle ($game, $player, xs:int($col))
+    let $url := <a href="view.xqy?game={$game-id}&amp;player={$player-name}&amp;error={$error}"/>/@href
+    return util:redirect ($url)
 };
 
 c4:play()
