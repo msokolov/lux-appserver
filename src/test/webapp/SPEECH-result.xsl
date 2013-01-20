@@ -10,9 +10,18 @@
     <div class="play-info">
       <div class="speech">
         <span>
-          <xsl:variable name="title" select="lux:highlight($query, .)//B/.." />
           <xsl:variable name="url" select="replace(base-uri(/), '/[^/]+$', '')" />
-          <a href="view.xqy/{$url}#speech{@speech}"><xsl:value-of select="($title[B], LINE[1])[1]" /></a>
+          <xsl:variable name="title">
+            <xsl:choose>
+              <xsl:when test="$query">
+                <xsl:sequence select="lux:highlight($query, .)//B/.." />
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="LINE[1]" />
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
+          <a href="view.xqy/{$url}#speech{@speech}"><xsl:copy-of select="$title" /></a>
           <xsl:if test="LINE[2]"> ...</xsl:if>
         </span>
       </div>
