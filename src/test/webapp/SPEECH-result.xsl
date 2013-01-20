@@ -7,15 +7,21 @@
   <xsl:param name="query" />
 
   <xsl:template match="/SPEECH">
-    <xsl:variable name="title">
-      <xsl:value-of select="lux:highlight($query, .)//B/.." />
-    </xsl:variable>
-    <a href="view.xqy/{base-uri(/)}"><xsl:value-of select="$title" /></a>
-    <span class="play-info">
-      <span class="speaker"><xsl:value-of select="local:capitalize(SPEAKER[1])" /></span>
-      <span class="source"><xsl:value-of select="@play" /></span>
-      <span class="locator"><xsl:value-of select="@act" />;<xsl:value-of select="@scene" /></span>
-    </span>
+    <div class="play-info">
+      <div class="speech">
+        <span>
+          <xsl:variable name="title" select="lux:highlight($query, .)//B/.." />
+          <xsl:variable name="url" select="replace(base-uri(/), '/[^/]+$', '')" />
+          <a href="view.xqy/{$url}#speech{@speech}"><xsl:value-of select="($title[B], LINE[1])[1]" /></a>
+          <xsl:if test="LINE[2]"> ...</xsl:if>
+        </span>
+      </div>
+      <div class="speech-info">
+        <span class="speaker"><xsl:value-of select="local:capitalize(SPEAKER[1])" /></span>
+        <span class="source"><xsl:value-of select="@play" /></span>
+        <span class="locator"><xsl:value-of select="@act" />;<xsl:value-of select="@scene" /></span>
+      </div>
+    </div>
   </xsl:template>
 
   <xsl:function name="local:capitalize">

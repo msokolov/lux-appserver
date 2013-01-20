@@ -11,10 +11,10 @@ let $path := $lux:http/http/path-info
 let $doc := if (doc-available ($path)) then doc($path) else
   if (starts-with ($path, "/")) then doc (substring($path, 2)) else ()
 let $doctype := name($doc/*)
-let $stylesheet-name := concat("file:src/main/webapp/view-", $doctype, ".xsl")
+let $stylesheet-name := concat("file:view-", $doctype, ".xsl")
 return
   if (doc-available ($stylesheet-name)) then
-    lux:transform (doc($stylesheet-name), $doc)
+    layout:outer ('/view.xqy', lux:transform (doc($stylesheet-name), $doc))
   else
     layout:outer ('/view.xqy', <textarea cols="80" rows="12">{$doc}</textarea>)
 

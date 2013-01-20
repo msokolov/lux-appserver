@@ -52,7 +52,12 @@ ul.hlist li.selected { display: inline; background: #eeee22; }
 /********* search results styles *******/
 
 /* .play-info { font-size: smaller } */
-.play-info { color: #666; margin-left: 1em }
+.play-info { margin-left: 1em; margin-bottom: 0.5em }
 .play-info span { margin-left: 5px }
 .speaker { margin-right: 0.5em }
 .source { font-style: italic }
+.speech-info { color: #666; margin-left: 1em }
+.scene { margin-left: 1em }
+
+ul.speech { list-style-type: none; }
+ul.speech li { display: inline; padding: 1em; }
