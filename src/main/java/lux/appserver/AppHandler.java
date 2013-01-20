@@ -17,10 +17,11 @@ public class AppHandler extends ServletHandler {
     @Override
     public void doHandle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
-        if (request.getRequestURI().startsWith("/solr")) {
+        String requestURI = request.getRequestURI();
+        if (requestURI.startsWith("/solr")) {
             solrWebapp.doHandle(target, baseRequest, request, response);
         }
-        else if (request.getRequestURI().matches(".*\\.xq.*")) {
+        else if (requestURI.matches(".*\\.xq.*")) {
             getServlet (AppServer.LUX_APP_FORWARDER).handle(baseRequest, request, response);
         } else {
             getServlet (AppServer.DEFAULT).handle(baseRequest, request, response);
@@ -32,7 +33,8 @@ public class AppHandler extends ServletHandler {
     public void doScope(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-        if (request.getRequestURI().startsWith ("/solr")) {
+        String requestURI = request.getRequestURI();
+        if (requestURI.startsWith ("/solr")) {
             super.doScope(target, baseRequest, request, response);
         } else {
             // bypass the normal processing of filter and servlet matches
