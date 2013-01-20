@@ -18,6 +18,9 @@ public class AppServer {
     
     private static final String LUX_APPSERVER_PORT = "lux.appserver.port";
     private static final String LUX_SOLR_URL = "lux.solr.url";
+    private static final String LUX_SOLR_HOST = "lux.solr.host";
+    private static final String LUX_SOLR_PORT = "lux.solr.port";
+    private static final String LUX_SOLR_PATH = "lux.solr.path";
     private static final String LUX_RESOURCE_BASE = "lux.appserver.resourceBase";
     private static final String LUX_CONTEXT = "lux.appserver.context";
     
@@ -104,6 +107,15 @@ public class AppServer {
             else if (pname.equals(LUX_SOLR_URL)) {
                 setSolrURL(value);
             }
+            else if (pname.equals(LUX_SOLR_HOST)) {
+                appForwarderHolder.setInitParameter("solr-host", value);
+            }
+            else if (pname.equals(LUX_SOLR_PORT)) {
+                appForwarderHolder.setInitParameter("solr-port", value);
+            }
+            else if (pname.equals(LUX_SOLR_PATH)) {
+                appForwarderHolder.setInitParameter("forward-path", value);
+            }
             else if (pname.equals(LUX_RESOURCE_BASE)) {
                 resourceBase = value;
             }
@@ -146,11 +158,14 @@ public class AppServer {
             error ("-s must be followed by a valid URL, not " + value);
         }
         appForwarderHolder.setInitParameter("solr-host", solrURL.getHost());
-        int solrPort = solrURL.getPort();
+        appForwarderHolder.setInitParameter("forward-path", solrURL.getPath());
+        setSolrPort (solrURL.getPort());
+    }
+    
+    private void setSolrPort (int solrPort) {
         if (solrPort > 0) {
             appForwarderHolder.setInitParameter("solr-port", Integer.toString(solrPort));
         }
-        appForwarderHolder.setInitParameter("forward-path", solrURL.getPath());
     }
 
     private void setPort(String value) {
