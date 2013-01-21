@@ -8,6 +8,7 @@ import java.net.URLEncoder;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.eclipse.jetty.http.HttpURI;
 import org.eclipse.jetty.servlets.ProxyServlet;
@@ -86,8 +87,7 @@ public class AppForwarder extends ProxyServlet {
      * @throws MalformedURLException
      */
     @Override
-    protected HttpURI proxyHttpURI(String scheme, String serverName, int serverPort, String uri)
-        throws MalformedURLException
+    protected HttpURI proxyHttpURI(HttpServletRequest request, String uri) throws MalformedURLException
     {
         String [] parts = uri.split("\\?", 2);
         String url = parts[0];
@@ -127,11 +127,12 @@ public class AppForwarder extends ProxyServlet {
             }
             urlBuilder.append("lux.xquery=").append(resourceBase).append(xquery);
             url = urlBuilder.toString();
+            String scheme = request.getScheme();
             HttpURI httpURI =  new HttpURI(scheme+"://" + solrHost + ":" + solrPort + url);
             return httpURI;
         }
         // else: this is a local resource - don't translate
-        return new HttpURI(scheme+"://" + serverName + ":"+ serverPort + uri);
+        return super.proxyHttpURI(request, uri);
     }
     
     public String getSolrHost() {
