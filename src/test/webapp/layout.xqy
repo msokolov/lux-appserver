@@ -20,20 +20,25 @@ return <div><ul class="hlist">{
 
 declare function layout:outer ($current-url as xs:string, $body as node()*) 
 {
+    layout:outer($current-url, $body, ())
+};
+
+declare function layout:outer ($current-url as xs:string, $body as node()*, $header as node()*) 
+{
 <html>
   <head>
     <title>Lux Demo</title>
     <link href="{$config:root-url}styles.css" rel="stylesheet" />
   </head>
   <body>
-    <h1 class="logo">
-      <a href="{$config:root-url}index.xqy">
-        <img class="logo" src="{$config:root-url}img/sunflwor52.png" alt="Lux" height="40" /> Lux Demo
-      </a>
-    </h1>
-    {
-      layout:render-nav ($current-url)
-    }
+    <div id="masthead">
+      <h1 class="logo">
+        <a href="{$config:root-url}index.xqy">
+          <img class="logo" src="{$config:root-url}img/sunflwor52.png" alt="Lux" height="40" /> Lux Demo
+        </a>
+      </h1>
+      { layout:render-nav ($current-url), $header}
+    </div>
     <div id="main">{
       $body
     }</div>

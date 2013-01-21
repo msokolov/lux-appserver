@@ -8,13 +8,19 @@
 
   <xsl:template match="/SCENE">
     <!-- <h3><xsl:value-of select="$query" /></h3> -->
+    <xsl:apply-templates select="TITLE"/>
     <div class="scene">
-      <xsl:apply-templates />
+      <xsl:apply-templates select="TITLE/following-sibling::node()"/>
     </div>
   </xsl:template>
  
   <xsl:template match="TITLE">
-    <h2><xsl:apply-templates /></h2>
+    <h2>
+      Act 
+      <xsl:value-of select="local:roman(/SCENE/@act)"/>,
+      <xsl:text> </xsl:text>
+      <xsl:apply-templates />
+     </h2>
   </xsl:template>
  
   <xsl:template match="STAGEDIR">
@@ -50,4 +56,9 @@
     <div class="line" id="@line"><xsl:apply-templates /></div>
   </xsl:template>
 
+  <xsl:function name="local:roman">
+    <xsl:param name="num" />
+    <xsl:value-of select="('I','II','III','IV','V','VI','VII','VIII','IX','X')[position()=$num]" />
+  </xsl:function>
+  
 </xsl:stylesheet>
