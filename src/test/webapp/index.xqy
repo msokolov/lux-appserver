@@ -14,32 +14,36 @@ declare variable $lux:http as document-node() external;
           dispatcher, search results formatting :)
 
 
-declare function demo:search-results ($query, $start as xs:integer, $page-size as xs:integer, $sort as xs:string?)
+declare function demo:search-results ($query, $start as xs:integer, $page-size as xs:integer, $sort as xs:string?, $total as xs:integer)
 {
-  for $doc in subsequence(lux:search ($query, (), $sort), $start, $page-size)
+  for $doc at $index in subsequence(lux:search ($query, (), $sort), $start, $page-size)
   let $doctype := name($doc/*)
   let $stylesheet-name := concat("file:", $doctype, "-result.xsl")
+  let $enquery := search:encode-query(($lux:http/http/params/param, 
+    <param name="total"><value>{$total}</value></param>,
+    <param name="index"><value>{$index}</value></param>
+    )) 
   let $result-markup := 
     if (doc-available ($stylesheet-name)) then
-      lux:transform (doc($stylesheet-name), $doc, ("query", $query))
+      lux:transform (doc($stylesheet-name), $doc, ("query", $query, "enquery", $enquery))
     else
       let $uri := base-uri ($doc)
       return
         if (starts-with($uri, "/")) then
-        <a href="view.xqy{$uri}">{$uri}</a>
-      else <a href="view.xqy/{$uri}">{$uri}</a>
+        <a href="view.xqy{$uri}?enq={$enquery}">{$uri}</a>
+      else <a href="view.xqy/{$uri}?enq={$enquery}">{$uri}</a>
     return <li>{$result-markup}</li>
 };
 
 declare function demo:search ($params as element(param)*, $start as xs:integer, $page-size as xs:integer)
 {
-let $sort := $params[@name='sort']/value/string()
-let $query := search:query ($params)
-let $total := if ($query) then lux:count ($query) else 0
-return
-<search-results total="{$total}">{
-  if ($query) then demo:search-results ($query, $start, $page-size, $sort) else ()
-}</search-results>
+    let $sort := $params[@name='sort']/value/string()
+    let $query := search:query ($params)
+    let $total := if ($query) then lux:count ($query) else 0
+    return
+    <search-results total="{$total}">{
+        if ($query) then demo:search-results ($query, $start, $page-size, $sort, $total) else ()
+    }</search-results>
 };
 
 declare function demo:search () {

@@ -5,7 +5,8 @@
                 version="2.0">
 
   <xsl:param name="query" />
-
+  <xsl:param name="enquery" />
+  
   <xsl:template match="/SPEECH">
     <div class="play-info">
       <div class="speech">
@@ -13,15 +14,15 @@
           <xsl:variable name="url" select="replace(base-uri(/), '/[^/]+$', '')" />
           <xsl:variable name="title">
             <xsl:choose>
-              <xsl:when test="$query">
-                <xsl:sequence select="lux:highlight($query, .)//B/.." />
+              <xsl:when test="$query and $query != '*:*'">
+                <xsl:sequence select="lux:highlight($query, .)/descendant::B[1]/.." />
               </xsl:when>
               <xsl:otherwise>
-                <xsl:value-of select="LINE[1]" />
+                <xsl:sequence select="LINE[1]/node()" />
               </xsl:otherwise>
             </xsl:choose>
           </xsl:variable>
-          <a href="view.xqy/{$url}#speech{@speech}"><xsl:copy-of select="$title" /></a>
+          <a href="view.xqy/{$url}?enq={$enquery}#speech{@speech}"><xsl:copy-of select="$title" /></a>
           <xsl:if test="LINE[2]"> ...</xsl:if>
         </span>
       </div>

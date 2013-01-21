@@ -79,6 +79,20 @@ declare function search:search-controls ($params as element(param)*)
   (: Pagination controls override by setting start before submitting. :)
 };
 
+declare function search:encode-query ($params as element(param)*)
+    as xs:string
+{
+    string-join (for $param in $params[@name != 'wt'] return search:format-param ($param), ":")
+};
+
+declare function search:decode-query ($enquery as xs:string?)
+    as element(param)*
+{
+    for $p in tokenize($enquery, ":")
+    let $parts := tokenize ($p, "=")
+    return <param name="{$parts[1]}"><value>{$parts[2]}</value></param>
+};
+
 declare function search:search-description ($start as xs:integer, $total as xs:integer, $next as xs:integer, $params as element(param)*)
 {
 <div id="search-description">{

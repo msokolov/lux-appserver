@@ -7,20 +7,33 @@
   <xsl:param name="query" />
 
   <xsl:template match="/SCENE">
+    <!-- <h3><xsl:value-of select="$query" /></h3> -->
     <div class="scene">
       <xsl:apply-templates />
     </div>
   </xsl:template>
-
+ 
+  <xsl:template match="TITLE">
+    <h2><xsl:apply-templates /></h2>
+  </xsl:template>
+ 
+  <xsl:template match="STAGEDIR">
+    <blockquote><xsl:apply-templates /></blockquote>
+  </xsl:template>
+  
   <xsl:template match="SPEECH">
-    <ul class="speech">
-      <li class="speech-info">
-        <span class="speaker"><xsl:value-of select="local:capitalize(SPEAKER[1])" /></span>
-      </li>
-      <li>
+    <div class="speech-container" id="speech{@speech}">
+      <div class="speaker">
+        <xsl:value-of select="local:capitalize(SPEAKER[1])" />
+      </div>
+      <div class="speech">
         <xsl:apply-templates select="LINE" />
-      </li>
-    </ul>
+      </div>
+    </div>
+  </xsl:template>
+  
+  <xsl:template match="B">
+    <span class="hi"><xsl:apply-templates /></span>
   </xsl:template>
 
   <xsl:function name="local:capitalize">
@@ -33,8 +46,8 @@
     <xsl:value-of select="string-join($words, ' ')" />
   </xsl:function>
 
-  <xsl:template match="/LINE">
-    <div class="line"><xsl:apply-templates /></div>
+  <xsl:template match="LINE">
+    <div class="line" id="@line"><xsl:apply-templates /></div>
   </xsl:template>
 
 </xsl:stylesheet>

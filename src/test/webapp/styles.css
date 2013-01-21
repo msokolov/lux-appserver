@@ -5,10 +5,11 @@ body { font-family: Arial, Helvetica, sans-serif;
      }
 
 /******** header, branding ********/
-h1, h2, h3 { font-family: "Candara Bold", Arial, Helvetica, sans-serif; margin: 0.5em; float: left }
+h1.logo { float: left }
 img.logo { vertical-align: middle }
 
 h1 a { text-decoration: none }
+h1, h2, h3 { font-family: "Candara Bold", Arial, Helvetica, sans-serif; margin: 0.5em; }
 
 ul.hlist { list-style-type: none; font-size: 0; float: right}
 ul.hlist li { display: inline; 
@@ -16,10 +17,10 @@ ul.hlist li { display: inline;
               padding-top: 0.25em; padding-bottom: 0.25em;
               padding-right: 1em; padding-left: 1em; 
               border: 1px solid black;
-              background: #dddd88;
+              background: #ffd402;
               font-size: medium;
             }
-ul.hlist li.selected { display: inline; background: #eeee22; }
+ul.hlist li.selected { display: inline; background: #fea607; }
 
 #main { padding-top: 70px }
 
@@ -54,10 +55,13 @@ ul.hlist li.selected { display: inline; background: #eeee22; }
 /* .play-info { font-size: smaller } */
 .play-info { margin-left: 1em; margin-bottom: 0.5em }
 .play-info span { margin-left: 5px }
-.speaker { margin-right: 0.5em }
+div.speaker { width: 8em; float: left; color: #666; font-weight: bold}
+div.speech { left: 9em; display: table-cell}
+div.speech-container { margin-bottom: 1em; }
 .source { font-style: italic }
 .speech-info { color: #666; margin-left: 1em }
 .scene { margin-left: 1em }
-
+.hi { background: #ff0; font-weight: bold }
 ul.speech { list-style-type: none; }
-ul.speech li { display: inline; padding: 1em; }
+ul.speech li { display: inline;  }
+

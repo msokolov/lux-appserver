@@ -26,7 +26,7 @@ declare function layout:outer ($current-url as xs:string, $body as node()*)
     <link href="{$config:root-url}styles.css" rel="stylesheet" />
   </head>
   <body>
-    <h1>
+    <h1 class="logo">
       <a href="{$config:root-url}index.xqy">
         <img class="logo" src="{$config:root-url}img/sunflwor52.png" alt="Lux" height="40" /> Lux Demo
       </a>
