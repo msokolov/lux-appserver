@@ -2,10 +2,15 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>lux</groupId>
   <artifactId>lux-appserver</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.5</version>
   <name>Lux Application Server</name>
   <description>minimal web server that proxies xquery requests for Solr</description>
   <dependencies>
+    <dependency>
+      <groupId>lux</groupId>
+      <artifactId>lux</artifactId>
+      <version>0.5</version>
+    </dependency>
   	<dependency>
 	     <groupId>org.eclipse.jetty</groupId>
 	     <artifactId>jetty-server</artifactId>
@@ -67,11 +72,6 @@
       <artifactId>jetty-webapp</artifactId>
       <version>8.1.8.v20121106</version>
     </dependency>
-    <dependency>
-      <groupId>lux</groupId>
-      <artifactId>lux</artifactId>
-      <version>0.5-SNAPSHOT</version>
-    </dependency>
   </dependencies> 
   <build>
   <plugins>
@@ -104,6 +104,9 @@
 		</configuration>
 	</plugin>
     <!--
+    We'd like to run the app server, and then the integration tests,
+    but this plugin isn't capable of that - it blocks waiting for this
+    process to exit; so you have to run the server manually and then the tests
     <plugin>
       <groupId>org.codehaus.mojo</groupId>
       <artifactId>exec-maven-plugin</artifactId>
@@ -142,6 +145,9 @@
             <goals>
               <goal>copy-dependencies</goal>
             </goals>
+            <configuration>
+              <excludeArtifactIds>antlr,httpunit,junit,xalan,hamcrest-core,dom4j,js,struts-core,struts-taglib,struts-tiles,xmlParserAPIs,xom,zookeeper</excludeArtifactIds>
+            </configuration>
           </execution>
         </executions>
     </plugin>
