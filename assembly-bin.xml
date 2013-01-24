@@ -4,7 +4,9 @@
   <id>bin</id>
   <formats>
     <format>tar.gz</format>
+<!--
     <format>tar.bz2</format>
+-->
     <format>zip</format>
   </formats>
   <fileSets>
@@ -15,9 +17,9 @@
         <include>README*</include>
         <include>LICENSE*</include>
         <include>NOTICE*</include>
+        <!-- TODO: move to etc/ -->
         <include>lux</include>
         <include>lux.bat</include>
-        <include>lux.properties</include>
       </includes>
     </fileSet>
     <fileSet>
@@ -35,8 +37,29 @@
       </includes>
     </fileSet>
     <fileSet>
+      <directory>${project.basedir}/solr/conf</directory>
+      <outputDirectory>/solr/conf</outputDirectory>
+      <includes>
+        <include>*.xml</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>${project.basedir}/solr/empty</directory>
+      <outputDirectory>/solr/data</outputDirectory>
+      <excludes>
+        <exclude>*</exclude>
+      </excludes>
+    </fileSet>
+    <fileSet>
       <directory>${project.basedir}/src/test/webapp</directory>
-      <outputDirectory>/demo</outputDirectory>
+      <outputDirectory>webapps/demo</outputDirectory>
+      <includes>
+        <include>**</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>${project.basedir}/src/main/webapp</directory>
+      <outputDirectory>webapps/solr</outputDirectory>
       <includes>
         <include>**</include>
       </includes>
