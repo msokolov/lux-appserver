@@ -21,6 +21,9 @@ public class AppServer {
     private static final String LUX_SOLR_HOST = "lux.solr.host";
     private static final String LUX_SOLR_PORT = "lux.solr.port";
     private static final String LUX_SOLR_PATH = "lux.solr.path";
+    private static final String LUX_SOLR_WEBAPP_FOLDER = "lux.solr.webapp-folder";
+    public static final String LUX_SOLR_FORWARD_PATH = "lux.solr.forward-path";
+
     private static final String LUX_RESOURCE_BASE = "lux.appserver.resourceBase";
     private static final String LUX_CONTEXT = "lux.appserver.context";
     
@@ -31,6 +34,10 @@ public class AppServer {
     private int port = 8080;            // -p
     private String context = "/";       // -c
     private String resourceBase = ".";  // -r
+
+    private String solrWebappFolder = "webapps/solr";
+    private String solrForwardPath = "/solr";
+    private String luxForwardPath = "/solr/lux";
     
     private ServletHolder appForwarderHolder;
     private ServletHolder resourcesHolder;
@@ -67,14 +74,12 @@ public class AppServer {
         appForwarderHolder.setInitParameter("resourceBase", resourceBase);
         
         if (appForwarderHolder.getInitParameter("solr-host") == null) {
-            // embedded solr war:
-            // FIXME: expose these paths via configuration?
-            luxWebapp = new WebAppContext(handler, "src/main/webapp", "/solr");
-            xqueryForward.setServletPath ("/solr");
-            xqueryForward.setForwardPath ("/solr/lux");
+            // embedded solr webapp
+            luxWebapp = new WebAppContext(handler, solrWebappFolder, solrForwardPath);
+            xqueryForward.setServletPath (solrForwardPath);
+            xqueryForward.setForwardPath (luxForwardPath);
             xqueryForward.setSolrPort (port);
             handler.setSolrWebapp (luxWebapp);
-            // server.setHandler(webapp);
         }
 
         server = new Server(port);
@@ -82,7 +87,7 @@ public class AppServer {
         ServletContextHandler root = new ServletContextHandler(server, context);
         root.setWelcomeFiles(new String[] { "index.xqy" });
         root.setServletHandler(handler);
-        
+
     }
     
     // read properties from lux.properties in the current directory, if it exists
@@ -116,6 +121,9 @@ public class AppServer {
             }
             else if (pname.equals(LUX_SOLR_PATH)) {
                 appForwarderHolder.setInitParameter("forward-path", value);
+            }
+            else if (pname.equals(LUX_SOLR_WEBAPP_FOLDER)) {
+                solrWebappFolder = value;
             }
             else if (pname.equals(LUX_RESOURCE_BASE)) {
                 resourceBase = value;
@@ -156,7 +164,7 @@ public class AppServer {
         try {
             solrURL = new URL(value);
         } catch (MalformedURLException e) {
-            error ("-s must be followed by a valid URL, not " + value);
+            error ("Solr URL must be a valid URL, not " + value);
         }
         appForwarderHolder.setInitParameter("solr-host", solrURL.getHost());
         appForwarderHolder.setInitParameter("forward-path", solrURL.getPath());
