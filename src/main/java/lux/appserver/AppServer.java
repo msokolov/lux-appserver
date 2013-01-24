@@ -45,14 +45,15 @@ public class AppServer {
     
     public AppServer (String ... argv) {
         
+        AppForwarder xqueryForward = new AppForwarder();
+        appForwarderHolder = new ServletHolder(xqueryForward);
+        appForwarderHolder.setName(LUX_APP_FORWARDER);
+        
         handleProperties();
         handleArguments(argv);
         
         AppHandler handler = new AppHandler();
         
-        AppForwarder xqueryForward = new AppForwarder();
-        appForwarderHolder = new ServletHolder(xqueryForward);
-        appForwarderHolder.setName(LUX_APP_FORWARDER);
         handler.addServlet(appForwarderHolder);
         
         DefaultServlet resources = new DefaultServlet();
