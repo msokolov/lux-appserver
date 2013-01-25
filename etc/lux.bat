@@ -1,0 +1,1 @@
+java -cp ".;lib\*" lux.appserver.AppServer -p 8080 -c / -r demo
