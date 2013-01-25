@@ -17,9 +17,6 @@
         <include>README*</include>
         <include>LICENSE*</include>
         <include>NOTICE*</include>
-        <!-- TODO: move to etc/ -->
-        <include>lux</include>
-        <include>lux.bat</include>
       </includes>
     </fileSet>
     <fileSet>

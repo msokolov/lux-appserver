@@ -1,2 +1,2 @@
 #!/bin/sh
-java -cp .:lib/\* lux.appserver.AppServer
+java -cp .:target/lux-appserver-0.5/\*:target\dependency\*:lib\* lux.appserver.AppServer
