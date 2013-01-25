@@ -70,8 +70,6 @@ public class AppForwarder extends ProxyServlet {
         if (p != null) {
             solrPort = Integer.valueOf(p);
         }
-        // import a logger jar?
-        System.out.println ("Lux AppServer startup resourceBase=" + resourceBase + "; servlet path=" + servletPath);
     }
     
     /* ------------------------------------------------------------ */
@@ -173,6 +171,10 @@ public class AppForwarder extends ProxyServlet {
 
     public void setForwardPath(String forwardPath) {
         this.forwardPath = forwardPath;
+    }
+
+    public String getSolrURL() {
+        return "http://" + solrHost + ":" + solrPort + servletPath;
     }
     
 }
