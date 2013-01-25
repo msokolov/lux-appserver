@@ -13,6 +13,7 @@ import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
+import org.slf4j.LoggerFactory;
 
 public class AppServer {
     
@@ -88,6 +89,7 @@ public class AppServer {
         root.setWelcomeFiles(new String[] { "index.xqy" });
         root.setServletHandler(handler);
 
+        LoggerFactory.getLogger(getClass()).info ("Lux AppServer listening on port {} resources at {}", port, resourceBase);
     }
     
     // read properties from lux.properties in the current directory, if it exists
