@@ -74,67 +74,67 @@
     </dependency>
   </dependencies> 
   <build>
-  <plugins>
-    <plugin>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-compiler-plugin</artifactId>
-      <version>2.0.2</version>
-      <configuration>
-        <source>1.6</source>
-        <target>1.6</target>
-        <encoding>UTF-8</encoding>
-      </configuration>
-    </plugin>
-    <plugin>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-resources-plugin</artifactId>
-      <version>2.5</version>
-      <configuration>
-        <encoding>UTF-8</encoding>
-      </configuration>
-    </plugin>
-	<plugin>
-		<groupId>org.apache.maven.plugins</groupId>
-		<artifactId>maven-jar-plugin</artifactId>
-		<version>2.4</version>
-		<configuration>
-			<excludes>
-				<exclude>**/log4j.properties</exclude>
-			</excludes>
-		</configuration>
-	</plugin>
-    <!--
-    We'd like to run the app server, and then the integration tests,
-    but this plugin isn't capable of that - it blocks waiting for this
-    process to exit; so you have to run the server manually and then the tests
-    <plugin>
-      <groupId>org.codehaus.mojo</groupId>
-      <artifactId>exec-maven-plugin</artifactId>
-      <version>1.1.1</version>
-      <executions>
-        <execution>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.0.2</version>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.5</version>
+        <configuration>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <excludes>
+            <exclude>**/log4j.properties</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+      <!--
+          We'd like to run the app server, and then the integration tests,
+          but this plugin isn't capable of that - it blocks waiting for this
+          process to exit; so you have to run the server manually and then the tests
+          <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>1.1.1</version>
+          <executions>
+          <execution>
           <phase>verify</phase>
           <goals>
-            <goal>java</goal>
+          <goal>java</goal>
           </goals>
           <configuration>
-            <mainClass>lux.appserver.AppServer</mainClass>
-            <arguments>
-              <argument>-h</argument>
-              <argument>localhost</argument>
-              <argument>-p</argument>
-              <argument>8080</argument>
-              <argument>-r</argument>
-              <argument>src/test/webapp</argument>
-              <argument>-s</argument>
-              <argument>http://localhost:8983/lux</argument>
-            </arguments>
+          <mainClass>lux.appserver.AppServer</mainClass>
+          <arguments>
+          <argument>-h</argument>
+          <argument>localhost</argument>
+          <argument>-p</argument>
+          <argument>8080</argument>
+          <argument>-r</argument>
+          <argument>src/test/webapp</argument>
+          <argument>-s</argument>
+          <argument>http://localhost:8983/lux</argument>
+          </arguments>
           </configuration>
-        </execution>
-      </executions>
-    </plugin>
-    -->
-    <plugin>
+          </execution>
+          </executions>
+          </plugin>
+      -->
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
         <version>2.6</version>
@@ -146,63 +146,63 @@
               <goal>copy-dependencies</goal>
             </goals>
             <configuration>
-              <excludeArtifactIds>antlr,httpunit,junit,xalan,hamcrest-core,dom4j,js,struts-core,struts-taglib,struts-tiles,xmlParserAPIs,xom,zookeeper</excludeArtifactIds>
+              <excludeArtifactIds>antlr,httpunit,junit,xalan,hamcrest-core,dom4j,js,struts-core,struts-taglib,struts-tiles,xmlParserAPIs,xom,zookeeper,servlet-api</excludeArtifactIds>
             </configuration>
           </execution>
         </executions>
-    </plugin>
-    <plugin>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-assembly-plugin</artifactId>
-      <version>2.4</version>
-      <configuration>
-        <!--
-        <descriptorRefs>
-          <descriptorRef>bin</descriptorRef>
-        </descriptorRefs>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <!--
+              <descriptorRefs>
+              <descriptorRef>bin</descriptorRef>
+              </descriptorRefs>
+          -->
+          <descriptors>
+            <descriptor>assembly-bin.xml</descriptor>
+          </descriptors>
+          <!--
+              <descriptorRefs>
+              <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>
+          -->
+        </configuration>
+      </plugin>
+    </plugins>
+    <pluginManagement>
+      <plugins>
+        <!--  fix error about maven-dependency-plugin not being supported by m2eclipse
+             to package, must use command-line maven (although there may be a way to get
+             this working in Eclipse, I don't care to).
         -->
-        <descriptors>
-          <descriptor>assembly-bin.xml</descriptor>
-        </descriptors>
-        <!--
-        <descriptorRefs>
-          <descriptorRef>jar-with-dependencies</descriptorRef>
-        </descriptorRefs>
-        -->
-      </configuration>
-    </plugin>
-  </plugins>
-  <pluginManagement>
-  <plugins>
-    <!--  fix error about maven-dependency-plugin not being supported by m2eclipse
-          to package, must use command-line maven (although there may be a way to get
-          this working in Eclipse, I don't care to).
-     -->
-    <plugin>
-      <groupId>org.eclipse.m2e</groupId>
-      <artifactId>lifecycle-mapping</artifactId>
-      <version>1.0.0</version>
-      <configuration>
-        <lifecycleMappingMetadata>
-          <pluginExecutions>
-            <pluginExecution>
-              <pluginExecutionFilter>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <versionRange>[2.0,)</versionRange>
-                <goals>
-                  <goal>copy-dependencies</goal>
-                </goals>
-              </pluginExecutionFilter>
-              <action>
-                <ignore />
-              </action>
-            </pluginExecution>
-          </pluginExecutions>
-        </lifecycleMappingMetadata>
-      </configuration>
-    </plugin>
-  </plugins>
-</pluginManagement>
-</build>
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <versionRange>[2.0,)</versionRange>
+                    <goals>
+                      <goal>copy-dependencies</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore />
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 </project>
