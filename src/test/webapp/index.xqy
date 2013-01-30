@@ -1,10 +1,10 @@
 xquery version "1.0";
 
-declare namespace demo="http://luxproject.net/demo";
+declare namespace demo="http://luxdb.net/demo";
 
-import module namespace config="http://luxproject.net/demo/config" at "config.xqy";
-import module namespace layout="http://luxproject.net/demo/layout" at "layout.xqy";
-import module namespace search="http://luxproject.net/search" at "search-lib.xqy";
+import module namespace config="http://luxdb.net/demo/config" at "config.xqy";
+import module namespace layout="http://luxdb.net/demo/layout" at "layout.xqy";
+import module namespace search="http://luxdb.net/search" at "search-lib.xqy";
 
 declare variable $lux:http as document-node() external;
 

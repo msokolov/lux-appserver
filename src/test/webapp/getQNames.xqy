@@ -1,4 +1,4 @@
-declare namespace lux="http://luxproject.net";
+declare namespace lux="http://luxdb.net";
 declare variable $lux:http as document-node() external;
 
 let $query := $lux:http/http/params/param[@name="query"]/value/string()

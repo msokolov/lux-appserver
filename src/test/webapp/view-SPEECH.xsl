@@ -1,5 +1,5 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-                xmlns:lux="http://luxproject.net"
+                xmlns:lux="http://luxdb.net"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:local="http://local" 
                 version="2.0">

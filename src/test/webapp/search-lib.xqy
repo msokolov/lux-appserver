@@ -1,6 +1,6 @@
 xquery version "1.0";
 
-module namespace search="http://luxproject.net/search";
+module namespace search="http://luxdb.net/search";
 
 declare function search:format-param ($p as element(param)) as xs:string
 {

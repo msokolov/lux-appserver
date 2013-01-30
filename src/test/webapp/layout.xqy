@@ -1,6 +1,6 @@
-module namespace layout = "http://luxproject.net/demo/layout";
+module namespace layout = "http://luxdb.net/demo/layout";
 
-import module namespace config="http://luxproject.net/demo/config" at "config.xqy";
+import module namespace config="http://luxdb.net/demo/config" at "config.xqy";
 
 declare function layout:render-nav ($current-url as xs:string)
 {

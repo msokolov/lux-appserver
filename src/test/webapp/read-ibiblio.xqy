@@ -1,10 +1,10 @@
 xquery version "1.0";
 
-declare namespace local="http://luxproject.net/local";
+declare namespace local="http://luxdb.net/local";
 declare namespace html="http://www.w3.org/1999/xhtml";
 
 import module namespace http="http://expath.org/ns/http-client";
-import module namespace layout="http://luxproject.net/demo/layout" at "layout.xqy";
+import module namespace layout="http://luxdb.net/demo/layout" at "layout.xqy";
 
 declare function local:read-ibiblio ()
 {

@@ -1,5 +1,5 @@
 declare namespace file="http://expath.org/ns/file";
-declare namespace demo="http://luxproject.net/demo";
+declare namespace demo="http://luxdb.net/demo";
 
 import module namespace http="http://expath.org/ns/http-client";
 
