@@ -8,18 +8,18 @@ declare variable $lux:http as document-node() external;
 
 declare function c4:new-game($name as xs:string, $dtm as xs:dateTime)
 {
-  <c4:game modified="{$dtm}" id="{$dtm}">
-    <c4:players>
-      <c4:player current="yes" color="#f00">{$name}</c4:player>
-    </c4:players>
-    <c4:grid>{
+  <game modified="{$dtm}" id="{$dtm}">
+    <players>
+      <player current="yes" color="#f00">{$name}</player>
+    </players>
+    <grid>{
       for $i in 1 to 7 return
-        <c4:row>{
+        <row>{
           for $j in 1 to 7 return
-            <c4:cell />
-        }</c4:row>
-    }</c4:grid>
-  </c4:game>
+            <cell />
+        }</row>
+    }</grid>
+  </game>
 };
 
 declare function c4:start-game()

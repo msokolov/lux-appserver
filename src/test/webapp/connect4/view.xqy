@@ -7,8 +7,8 @@ import module namespace util="http://falutin.net/connect4/util" at "util.xqy";
 
 declare variable $lux:http as document-node() external;
 
-declare function c4:players($game as element(c4:game), $user as element(c4:player)?) {
-  for $player at $i in $game/c4:players/c4:player
+declare function c4:players($game as element(game), $user as element(player)?) {
+  for $player at $i in $game/players/player
   let $pdisplay := if ($i eq 1) then <i>{$player/string()}</i> else $player/string()
   let $p := if ($user) then $pdisplay else 
   <a href="view.xqy?game={$game/@id}&amp;player={$player}">{$pdisplay}</a>
@@ -21,11 +21,11 @@ declare function c4:players($game as element(c4:game), $user as element(c4:playe
 
 declare function c4:main() {
   let $game-id := util:param ($lux:http, 'game')
-  let $game := collection()/c4:game[@id=$game-id]
+  let $game := collection()/game[@id=$game-id]
   let $player-name := util:param($lux:http, 'player')
-  let $players := $game/c4:players/c4:player
+  let $players := $game/players/player
   let $player := $players[.=$player-name]
-  let $active := if (count($players) gt 1) then $game/c4:players/c4:player[1] else ()
+  let $active := if (count($players) gt 1) then $game/players/player[1] else ()
   let $error := util:param($lux:http, "error")
   let $body := 
   <div>
@@ -38,13 +38,13 @@ declare function c4:main() {
       <input type="hidden" id="col" name="col" value="" />
     </form>
     <table class="c4grid">{
-      for $row in $game/c4:grid/c4:row
+      for $row in $game/grid/row
       return <tr>{
-      for $cell at $i in $row/c4:cell return
+      for $cell at $i in $row/cell return
       <td class="circle" col="{$i}">{
         let $color := $cell/string()
         where $color 
-        return attribute style { concat ("background: ", $color, "};") }
+        return attribute style { concat ("background: ", $color, ";") }
       }</td>
       }</tr>
     }</table>

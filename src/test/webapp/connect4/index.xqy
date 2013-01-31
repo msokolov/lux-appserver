@@ -9,10 +9,10 @@ declare variable $lux:http as document-node() external;
 
 (: Connect 4 Game :)
     
-declare function c4:list-game ($game as element(c4:game)) {
+declare function c4:list-game ($game as element(game)) {
 <li>
   <a href="view.xqy?game={$game/@id}">{
-    string-join ($game/c4:players/c4:player, ' vs. '),
+    string-join ($game/players/player, ' vs. '),
     $game/@id/string()
   }</a>
   {
@@ -43,9 +43,9 @@ declare function c4:main() {
     </form>
     <h2>Games</h2>
     {
-      if (not(collection()/c4:game)) then <p>There are no existing games</p> else
+      if (not(collection()/game)) then <p>There are no existing games</p> else
       <ul>{
-        for $game in collection()/c4:game order by $game/@modified descending
+        for $game in collection()/game order by $game/@modified descending
         return c4:list-game ($game)
       }</ul>
     }

@@ -7,23 +7,23 @@ import module namespace util="http://falutin.net/connect4/util" at "util.xqy";
 
 declare variable $lux:http as document-node() external;
 
-declare function c4:game-add-user($game as element(c4:game), $name as xs:string)
-  as element(c4:game)
+declare function c4:game-add-user($game as element(game), $name as xs:string)
+  as element(game)
 {
-  let $active := not($game/c4:players/c4:player/@active="yes")
+  let $active := not($game/players/player/@active="yes")
   return
-  <c4:game>{
+  <game>{
     $game/@id, 
     attribute modified { current-dateTime() },
-    <c4:players>{
-      $game/c4:players/c4:player,
-      <c4:player color="#ff0">{
+    <players>{
+      $game/players/player,
+      <player color="#ff0">{
         if ($active) then attribute active {"yes"} else (),
         $name
-      }</c4:player>
-    }</c4:players>,
-    $game/c4:grid
-  }</c4:game>
+      }</player>
+    }</players>,
+    $game/grid
+  }</game>
 };
 
 declare function c4:join-game()
@@ -31,13 +31,13 @@ declare function c4:join-game()
   let $dtm := current-dateTime()
   let $name := util:param ($lux:http, 'player')
   let $game-id := util:param($lux:http, 'game')
-  let $game := collection()/c4:game[@id=$game-id]
+  let $game := collection()/game[@id=$game-id]
   return
     if (not($game)) then util:error("Game not found")
   else
     if (not($name)) then util:error("Player name cannot be blank")
   else
-    if (count($game/c4:players/c4:player) gt 1) then util:error ("Game full")
+    if (count($game/players/player) gt 1) then util:error ("Game full")
   else
     let $updated-game := c4:game-add-user ($game, $name)
     let $insert := (

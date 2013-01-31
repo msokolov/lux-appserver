@@ -1,1 +1,13 @@
+# compiled code and distributions
 target
+
+# log files
+lux.log
+
+# emacs files
+\#*
+.#*
+*~
+
+# solr index
+solr/data/*
