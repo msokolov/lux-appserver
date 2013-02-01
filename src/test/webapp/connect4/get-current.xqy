@@ -7,4 +7,4 @@ declare variable $lux:http as document-node() external;
 
 let $game-id := util:param ($lux:http, 'game')
 let $game as element(game) := collection()/game[@id=$game-id]
-return $game/players/player[1]
+return $game/players/player[1]/string()
