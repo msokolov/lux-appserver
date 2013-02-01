@@ -62,3 +62,62 @@ declare function c4a:draw-grid ($game as element(game)?)
   }</tr>
 }</table>
 };
+
+declare function c4a:place-circle (
+  $game as element(game), 
+  $player as element(player), 
+  $col as xs:int)
+as element (game)
+{
+  (: should always = 1 :)
+  let $iplayer := count ($game/players/player[. << $player]) + 1
+  let $log := lux:log (count($game/grid/row/cell[$col][empty(node())]), "info")
+  let $selected := ($game/grid/row/cell[$col][empty(node())])[last()]
+  return if (not($selected or $log)) then <game status="error">There's no space left in that column - try again</game> else
+  let $updated-game := 
+  <game>{
+    $game/@id, 
+    attribute modified { current-dateTime() },
+    (: shift player to the end of the queue :)
+    <players>{
+      $game/players/player[not(position() eq $iplayer)],
+      $player
+    }</players>,
+    <grid>{
+      for $row in $game/grid/row return
+      <row>{
+        for $cell in $row/cell return
+          if ($cell is $selected) 
+            then <cell>{$player/@color/string()}</cell>
+          else $cell
+      }</row>
+    }</grid>
+  }</game>
+  let $checked-game := c4a:check-game ($updated-game)
+  let $insert := (
+    lux:insert (concat('/connect4/', $game/@id), $checked-game),
+    lux:commit())
+  return ($updated-game, lux:log(($insert,"hey")[1], "info"))
+};
+
+
+
+declare function c4a:fezzik ($game)
+{
+  let $cell := ($game//cell[.=''])[1]
+  let $col := count ($cell/preceding-sibling::cell) + 1
+  return c4a:place-circle ($game, $game/players/player[1], xs:int($col))
+};
+
+declare function c4a:is-bot($player)
+{
+  $player = ("fezzik")
+};
+
+declare function c4a:bot-play ($game)
+{
+  let $bot := $game/players/player[1]
+  where c4a:is-bot($bot)
+  return c4a:fezzik ($game)
+};
+

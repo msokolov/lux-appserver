@@ -42,7 +42,7 @@ function waitForTurn() {
         dataType: 'text', url: url,
     }).done(function (data) {
             console.log ("get-current returns " + data);
-            if (data == $('#player').val()) {
+            if (data && data == $('#player').val()) {
                 // BLINK!
                 location.reload();
                 // $('#turn').html("<div active='true'><blink>It's your turn now</blink><div class='circle'></div></div>");

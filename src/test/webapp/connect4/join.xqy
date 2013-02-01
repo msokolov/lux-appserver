@@ -4,6 +4,7 @@ declare namespace c4="http://falutin.net/connect4";
 
 import module namespace layout="http://falutin.net/connect4/layout" at "layout.xqy";
 import module namespace util="http://falutin.net/connect4/util" at "util.xqy";
+import module namespace c4a="http://falutin.net/connect4/analysis" at "analysis.xqy";
 
 declare variable $lux:http as document-node() external;
 
@@ -40,12 +41,16 @@ declare function c4:join-game()
     let $insert := (
       lux:insert (concat('/connect4/', $game-id), $updated-game),
       lux:commit())
+      let $new-name := 
+        if (c4a:is-bot($name))
+          then $game/players/player[not( .= $name)]
+          else $name
       let $body := 
       <div>
         { $insert }
         Player {$name} joined;  
         (:FIXME - if $name=(bot) then use other player :)
-        <a href="view.xqy?game={$game-id}&amp;player={$name}">Proceed to game.</a>
+        <a href="view.xqy?game={$game-id}&amp;player={$new-name}">Proceed to game.</a>
       </div>
       return layout:outer('/connect4/start.xqy', $body)
 };
