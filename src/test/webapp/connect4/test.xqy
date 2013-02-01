@@ -18,10 +18,11 @@ declare function c4:test ()
   let $check00 := c4a:check-cell ($game, 6, 1, $cell, 1, <dir x="1" y="0" />)
   let $check01 := c4a:check-cell ($game, 6, 1, $cell, 1, <dir x="1" y="0" />)
   return layout:outer('/connect4/test.xqy', 
+    (c4a:draw-grid ($game),
     <textarea rows="24" cols="80">{ 
     $checked-game, "&#10;.", $winner, "&#10;.", $check00, "&#10;.", $check01
                                   } </textarea>
-                )
+                ))
 };
 
 

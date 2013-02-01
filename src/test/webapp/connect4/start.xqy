@@ -10,7 +10,7 @@ declare function c4:new-game($name as xs:string, $dtm as xs:dateTime)
 {
   <game modified="{$dtm}" id="{$dtm}">
     <players>
-      <player current="yes" color="#f00">{$name}</player>
+      <player color="#f00">{$name}</player>
     </players>
     <grid>{
       for $i in 1 to 6 return

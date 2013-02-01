@@ -47,3 +47,18 @@ declare function c4a:check-game ($game as element(game))
     else 
       $game
 };
+
+declare function c4a:draw-grid ($game as element(game)?)
+{
+<table class="c4grid">{
+  for $row in $game/grid/row
+  return <tr>{
+  for $cell at $i in $row/cell return
+  <td class="circle" col="{$i}">{
+    let $color := $cell/string()
+    where $color 
+    return attribute style { concat ("background: ", $color, ";") }
+  }</td>
+  }</tr>
+}</table>
+};

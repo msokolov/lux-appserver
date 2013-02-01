@@ -12,12 +12,13 @@ declare function c4:place-circle (
   $game as element(game), 
   $player as element(player), 
   $col as xs:int)
+as element (game)
 {
   (: should always = 1 :)
   let $iplayer := count ($game/players/player[. << $player]) + 1
   let $log := lux:log (count($game/grid/row/cell[$col][empty(node())]), "info")
   let $selected := ($game/grid/row/cell[$col][empty(node())])[last()]
-  return if (not($selected or $log)) then "There's no space left in that column - try again" else
+  return if (not($selected or $log)) then <game status="error">There's no space left in that column - try again</game> else
   let $updated-game := 
   <game>{
     $game/@id, 
@@ -41,7 +42,32 @@ declare function c4:place-circle (
   let $insert := (
     lux:insert (concat('/connect4/', $game/@id), $checked-game),
     lux:commit())
-  return $insert
+  return ($updated-game, lux:log(($insert,"hey")[1], "info"))
+};
+
+declare function c4:fezzik ($game)
+{
+  let $cell := ($game//cell[.=''])[1]
+  let $col := count ($cell/preceding-sibling::cell) + 1
+  return c4:place-circle ($game, $game/players/player[1], $col)
+};
+
+declare function c4:bot-play ($game)
+{
+  let $bot := $game/players/player[1]
+  where $bot = ("fezzik")
+  return c4:fezzik ($game)
+};
+
+declare function c4:play-turn(
+  $game as element(game), 
+  $player as element(player), 
+  $col as xs:int)
+{
+  let $new-game := c4:place-circle ($game, $player, xs:int($col))
+  let $next-game-state := c4:bot-play ($new-game)
+  let $url := <a href="view.xqy?game={$game/@id}&amp;player={$player}&amp;error={$next-game-state[@status='error']}"/>/@href
+  return $url
 };
 
 declare function c4:play ()
@@ -60,8 +86,7 @@ declare function c4:play ()
   else
     if (not(number($col)) or xs:int($col) lt 1 or xs:int($col) gt count($game/grid/row[1]/cell)) then util:error (concat("Invalid column: ", $col))
   else
-    let $error := c4:place-circle ($game, $player, xs:int($col))
-    let $url := <a href="view.xqy?game={$game-id}&amp;player={$player-name}&amp;error={$error}"/>/@href
+    let $url := c4:play-turn ($game, $player, xs:int($col))
     return util:redirect ($url)
 };
 
