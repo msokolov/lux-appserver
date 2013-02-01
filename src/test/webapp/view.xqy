@@ -1,6 +1,5 @@
 xquery version "1.0";
 
-declare namespace lux="http://luxdb.net";
 declare namespace demo="http://luxdb.net/demo";
 
 import module namespace layout="http://luxdb.net/demo/layout" at "layout.xqy";

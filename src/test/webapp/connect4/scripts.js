@@ -17,18 +17,29 @@ function validate() {
     return true;
 }
 
+function activateClick ()
+{
+    $('.circle').bind("click", onClick);
+}
+
 function updateTurnState () 
 {
     if ($('#turn').attr('active') == 'true') {
-        $('.circle').bind("click", onClick);
+        activateClick();
     } else {
         waitForTurn ();
     }
 }
 
+var intervalTimer;
+
 function waitForTurn() {
     var url = 'get-current.xqy?game=' + $('#game').val();
     console.log (url);
+    if (intervalTimer) {
+        clearInterval (intervalTimer);
+        intervalTimer = undefined
+    }
     $.ajax({
         dataType: 'text', url: url,
     }).done(function (data) {
@@ -36,10 +47,11 @@ function waitForTurn() {
             if (data == $('#player').val()) {
                 // BLINK!
                 $('#turn').html("<div active='true'><blink>It's your turn now</blink><div class='circle'></div></div>");
-                updateTurnState();
+                location.reload();
             } else {
-                console.log ("waitForTurn in 5000");
-                //setInterval (waitForTurn, 5000);
+                console.log ($('#player').val() + ' is not ' + data);
+                console.log ("waitForTurn in 1000");
+                intervalTimer = setInterval (waitForTurn, 1000);
             }
     });
 }

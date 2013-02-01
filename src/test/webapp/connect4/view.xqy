@@ -33,7 +33,7 @@ declare function c4:main() {
     </h2>
     <div>{if ($error) then <p class="error">{$error}</p> else ()}</div>
     <form action="play.xqy" method="post" name="play">
-      <input type="hidden" name="player" value="{$player-name}" />
+      <input type="hidden" id="player" name="player" value="{$player-name}" />
       <input type="hidden" id="game" name="game" value="{$game-id}" />
       <input type="hidden" id="col" name="col" value="" />
     </form>
