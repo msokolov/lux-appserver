@@ -17,29 +17,39 @@ function validate() {
     return true;
 }
 
+function enableClickEvent () {
+    $('.circle').bind("click", onClick);
+}
+
 function updateTurnState () 
 {
     if ($('#turn').attr('active') == 'true') {
-        $('.circle').bind("click", onClick);
+        enableClickEvent ();
     } else {
         waitForTurn ();
     }
 }
 
+var intervalTimer;
+
 function waitForTurn() {
     var url = 'get-current.xqy?game=' + $('#game').val();
     console.log (url);
+    if (intervalTimer) {
+        clearInterval (intervalTimer);
+    }
     $.ajax({
         dataType: 'text', url: url,
     }).done(function (data) {
             console.log ("get-current returns " + data);
             if (data == $('#player').val()) {
                 // BLINK!
-                $('#turn').html("<div active='true'><blink>It's your turn now</blink><div class='circle'></div></div>");
-                updateTurnState();
+                location.reload();
+                // $('#turn').html("<div active='true'><blink>It's your turn now</blink><div class='circle'></div></div>");
+                // enableClickEvent() ;
             } else {
                 console.log ("waitForTurn in 5000");
-                //setInterval (waitForTurn, 5000);
+                intervalTimer = setInterval (waitForTurn, 1000);
             }
     });
 }

@@ -27,3 +27,8 @@ h1 a { text-decoration: none }
     color: #f00;
     font-weight: bold;
 }
+
+#turn {
+    font-size: large;
+    font-weight: bold;
+}

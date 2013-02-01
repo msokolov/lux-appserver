@@ -4,6 +4,7 @@ declare namespace c4="http://falutin.net/connect4";
 
 import module namespace util="http://falutin.net/connect4/util" at "util.xqy";
 import module namespace layout="http://falutin.net/connect4/layout" at "layout.xqy";
+import module namespace c4a="http://falutin.net/connect4/analysis" at "analysis.xqy";
 
 declare variable $lux:http as document-node() external;
 
@@ -36,8 +37,9 @@ declare function c4:place-circle (
       }</row>
     }</grid>
   }</game>
+  let $checked-game := c4a:check-game ($updated-game)
   let $insert := (
-    lux:insert (concat('/connect4/', $game/@id), $updated-game),
+    lux:insert (concat('/connect4/', $game/@id), $checked-game),
     lux:commit())
   return $insert
 };

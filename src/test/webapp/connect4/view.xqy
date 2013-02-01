@@ -9,7 +9,10 @@ declare variable $lux:http as document-node() external;
 
 declare function c4:players($game as element(game), $user as element(player)?) {
   for $player at $i in $game/players/player
-  let $pdisplay := if ($i eq 1) then <i>{$player/string()}</i> else $player/string()
+    let $color := attribute style {"background: ", $player/@color }
+    let $pdisplay := 
+      if ($i eq 1) then <i>{$color, $player/string()}</i> 
+      else <span>{$color, $player/string()}</span>
   let $p := if ($user) then $pdisplay else 
   <a href="view.xqy?game={$game/@id}&amp;player={$player}">{$pdisplay}</a>
   return if ($i eq 1) then $p else (" vs. ", $p)
@@ -22,6 +25,7 @@ declare function c4:players($game as element(game), $user as element(player)?) {
 declare function c4:main() {
   let $game-id := util:param ($lux:http, 'game')
   let $game := collection()/game[@id=$game-id]
+  let $winner := $game/@winner
   let $player-name := util:param($lux:http, 'player')
   let $players := $game/players/player
   let $player := $players[.=$player-name]
@@ -33,7 +37,7 @@ declare function c4:main() {
     </h2>
     <div>{if ($error) then <p class="error">{$error}</p> else ()}</div>
     <form action="play.xqy" method="post" name="play">
-      <input type="hidden" name="player" value="{$player-name}" />
+      <input type="hidden" id="player" name="player" value="{$player-name}" />
       <input type="hidden" id="game" name="game" value="{$game-id}" />
       <input type="hidden" id="col" name="col" value="" />
     </form>
@@ -49,8 +53,10 @@ declare function c4:main() {
       }</tr>
     }</table>
     <div id="turn">{
-      if ($player is $active) then
-        (attribute active { "true" }, "Your turn" )
+      if ($winner) then
+        concat ($players[@color = $winner], " wins!")
+      else if ($player is $active) then
+        (attribute active { "true" }, <blink>Your turn</blink> )
       else if ($active) then
         concat($active, "'s turn")
       else
