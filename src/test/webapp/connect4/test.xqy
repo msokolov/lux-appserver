@@ -12,15 +12,12 @@ declare function c4:test ()
 {
   let $game-id := util:param ($lux:http, 'game')
   let $game := collection()/game[@id=$game-id]
-  let $checked-game := c4a:check-game ($game)
-  let $winner := c4a:compute-winner ($game)
-  let $cell := c4a:get-cell ($game, 6, 1)
-  let $check00 := c4a:check-cell ($game, 6, 1, $cell, 1, <dir x="1" y="0" />)
-  let $check01 := c4a:check-cell ($game, 6, 1, $cell, 1, <dir x="1" y="0" />)
+  let $inigo-grid := c4a:inigo-grid($game)
   return layout:outer('/connect4/test.xqy', 
-    (c4a:draw-grid ($game),
+    (c4a:draw-grid ($game),c4a:draw-inigo-grid ($inigo-grid),
+    
     <textarea rows="24" cols="80">{ 
-    $checked-game, "&#10;.", $winner, "&#10;.", $check00, "&#10;.", $check01
+    $inigo-grid
                                   } </textarea>
                 ))
 };

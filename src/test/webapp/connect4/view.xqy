@@ -57,7 +57,8 @@ declare function c4:main() {
       else (
         "Waiting for some competition to show up, ",
         " or play against: ", 
-        <a href="join.xqy?game={$game-id}&amp;player=fezzik">fezzik</a>
+        <a href="join.xqy?game={$game-id}&amp;player=fezzik">fezzik</a>, " or ",
+        <a href="join.xqy?game={$game-id}&amp;player=inigo">inigo</a>
       )
     }</div>
     <p>player={$player} active={$active}
