@@ -4,13 +4,17 @@ declare namespace c4="http://falutin.net/connect4";
 
 import module namespace layout="http://falutin.net/connect4/layout" at "layout.xqy";
 import module namespace util="http://falutin.net/connect4/util" at "util.xqy";
+import module namespace c4a="http://falutin.net/connect4/analysis" at "analysis.xqy";
 
 declare variable $lux:http as document-node() external;
 
 declare function c4:players($game as element(game), $user as element(player)?) {
   for $player at $i in $game/players/player
-  let $pdisplay := if ($i eq 1) then <i>{$player/string()}</i> else $player/string()
-  let $p := if ($user) then $pdisplay else 
+    let $color := attribute style {"background: ", $player/@color }
+    let $pdisplay := 
+      if ($i eq 1) then <i>{$color, $player/string()}</i> 
+      else <span>{$color, $player/string()}</span>
+    let $p := if ($user) then $pdisplay else 
   <a href="view.xqy?game={$game/@id}&amp;player={$player}">{$pdisplay}</a>
   return if ($i eq 1) then $p else (" vs. ", $p)
 };
@@ -22,6 +26,7 @@ declare function c4:players($game as element(game), $user as element(player)?) {
 declare function c4:main() {
   let $game-id := util:param ($lux:http, 'game')
   let $game := collection()/game[@id=$game-id]
+  let $winner := if ($game/@winner) then $game/@winner else ()
   let $player-name := util:param($lux:http, 'player')
   let $players := $game/players/player
   let $player := $players[.=$player-name]
@@ -37,28 +42,29 @@ declare function c4:main() {
       <input type="hidden" id="game" name="game" value="{$game-id}" />
       <input type="hidden" id="col" name="col" value="" />
     </form>
-    <table class="c4grid">{
-      for $row in $game/grid/row
-      return <tr>{
-      for $cell at $i in $row/cell return
-      <td class="circle" col="{$i}">{
-        let $color := $cell/string()
-        where $color 
-        return attribute style { concat ("background: ", $color, ";") }
-      }</td>
-      }</tr>
-    }</table>
+    { c4a:draw-grid($game) }
     <div id="turn">{
-      if ($player is $active) then
-        (attribute active { "true" }, "Your turn" )
+      if (not($game)) then
+        ("Game ", $game-id, " not found")
+
+      else if ($winner) then
+        concat ($players[@color = $winner], " wins!")
+
+      else if ($player is $active) then
+        (attribute active { "true" }, <blink>Your turn</blink> )
       else if ($active) then
         concat($active, "'s turn")
-      else
-        "Waiting for some competition to show up"
+      else (
+        "Waiting for some competition to show up, ",
+        " or play against: ", 
+        <a href="join.xqy?game={$game-id}&amp;player=fezzik">fezzik</a>, " or ",
+        <a href="join.xqy?game={$game-id}&amp;player=inigo">inigo</a>
+      )
     }</div>
     <p>player={$player} active={$active}
     </p>
     <textarea rows="8" cols="132">{$game}</textarea>
+    <div><a href="test.xqy?game={$game-id}">debug</a></div>
     <script src="../js/jquery-1.8.2.min.js"></script>
     <script src="scripts.js"></script>
   </div>

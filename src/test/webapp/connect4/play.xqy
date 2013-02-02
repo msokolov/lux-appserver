@@ -4,42 +4,19 @@ declare namespace c4="http://falutin.net/connect4";
 
 import module namespace util="http://falutin.net/connect4/util" at "util.xqy";
 import module namespace layout="http://falutin.net/connect4/layout" at "layout.xqy";
+import module namespace c4a="http://falutin.net/connect4/analysis" at "analysis.xqy";
 
 declare variable $lux:http as document-node() external;
 
-declare function c4:place-circle (
+declare function c4:play-turn(
   $game as element(game), 
   $player as element(player), 
   $col as xs:int)
 {
-  (: should always = 1 :)
-  let $iplayer := count ($game/players/player[. << $player]) + 1
-  let $log := lux:log (count($game/grid/row/cell[$col][empty(node())]), "info")
-  let $selected := ($game/grid/row/cell[$col][empty(node())])[last()]
-  return if (not($selected or $log)) then "There's no space left in that column - try again" else
-  let $updated-game := 
-  <game>{
-    $game/@id, 
-    attribute modified { current-dateTime() },
-    (: shift player to the end of the queue :)
-    <players>{
-      $game/players/player[not(position() eq $iplayer)],
-      $player
-    }</players>,
-    <grid>{
-      for $row in $game/grid/row return
-      <row>{
-        for $cell in $row/cell return
-          if ($cell is $selected) 
-            then <cell>{$player/@color/string()}</cell>
-          else $cell
-      }</row>
-    }</grid>
-  }</game>
-  let $insert := (
-    lux:insert (concat('/connect4/', $game/@id), $updated-game),
-    lux:commit())
-  return $insert
+  let $new-game := c4a:place-circle ($game, $player, xs:int($col))
+  let $next-game-state := c4a:bot-play ($new-game)
+  let $url := <a href="view.xqy?game={$game/@id}&amp;player={$player}&amp;error={$next-game-state[@status='error']}"/>/@href
+  return $url
 };
 
 declare function c4:play ()
@@ -58,8 +35,7 @@ declare function c4:play ()
   else
     if (not(number($col)) or xs:int($col) lt 1 or xs:int($col) gt count($game/grid/row[1]/cell)) then util:error (concat("Invalid column: ", $col))
   else
-    let $error := c4:place-circle ($game, $player, xs:int($col))
-    let $url := <a href="view.xqy?game={$game-id}&amp;player={$player-name}&amp;error={$error}"/>/@href
+    let $url := c4:play-turn ($game, $player, xs:int($col))
     return util:redirect ($url)
 };
 

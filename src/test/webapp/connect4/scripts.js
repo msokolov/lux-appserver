@@ -44,14 +44,14 @@ function waitForTurn() {
         dataType: 'text', url: url,
     }).done(function (data) {
             console.log ("get-current returns " + data);
-            if (data == $('#player').val()) {
+            if (data && data == $('#player').val()) {
                 // BLINK!
-                $('#turn').html("<div active='true'><blink>It's your turn now</blink><div class='circle'></div></div>");
                 location.reload();
+                // $('#turn').html("<div active='true'><blink>It's your turn now</blink><div class='circle'></div></div>");
+                // enableClickEvent() ;
             } else {
-                console.log ($('#player').val() + ' is not ' + data);
-                console.log ("waitForTurn in 1000");
-                intervalTimer = setInterval (waitForTurn, 1000);
+                // console.log ("waitForTurn in 2000");
+                intervalTimer = setInterval (waitForTurn, 2000);
             }
     });
 }
