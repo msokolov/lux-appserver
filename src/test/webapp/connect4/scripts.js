@@ -43,16 +43,16 @@ function waitForTurn() {
     $.ajax({
         dataType: 'text', url: url,
     }).done(function (data) {
-            console.log ("get-current returns " + data);
-            if (data && data == $('#player').val()) {
-                // BLINK!
-                location.reload();
-                // $('#turn').html("<div active='true'><blink>It's your turn now</blink><div class='circle'></div></div>");
-                // enableClickEvent() ;
-            } else {
-                // console.log ("waitForTurn in 2000");
-                intervalTimer = setInterval (waitForTurn, 2000);
-            }
+        console.log ("get-current returns " + data);
+        if (data && data == $('#player').val()) {
+            // BLINK!
+            location.reload();
+            // $('#turn').html("<div active='true'><blink>It's your turn now</blink><div class='circle'></div></div>");
+            // enableClickEvent() ;
+        } else {
+            // console.log ("waitForTurn in 2000");
+            intervalTimer = setInterval (waitForTurn, 2000);
+        }
     });
 }
 

@@ -26,11 +26,12 @@ declare variable $c4a:dirpairs as element(dirs) :=
   </pair>
 </dirs>;
 
+declare variable $c4a:inigo-scores := (0, 1, 10, 100);
+
 declare function c4a:get-cell ($game, $row, $col)
 {
   $game/grid/row[$row]/cell[$col]
 };
-
 
 declare function c4a:count-run ($game as element(game), $row, $col, $cell, $len, $dir)
   as xs:integer
@@ -67,7 +68,7 @@ declare function c4a:check-game ($game as element(game))
   let $winner := c4a:compute-winner ($game)
   return 
     if (count($winner) > 0) then
-      <game  winner="{$winner[1]}">{$game/@*, $game/*}</game>
+      <game winner="{$winner[1]}">{$game/@*, $game/*}</game>
     else 
       $game
 };
@@ -90,7 +91,7 @@ declare function c4a:draw-grid ($game as element(game)?)
 declare function c4a:draw-inigo-grid ($grid as element(grid)?)
 {
 <table class="c4grid">{
-  for $row in $grid/row
+  for $row at $j in $grid/row
   return <tr>{
   for $cell at $i in $row/cell return
   <td class="circle" col="{$i}">{
@@ -136,16 +137,27 @@ as element (game)
   let $insert := (
     lux:insert (concat('/connect4/', $game/@id), $checked-game),
     lux:commit())
-  return ($updated-game, lux:log(($insert,"hey")[1], "info"))
+  return ($checked-game, lux:log(($insert,"hey")[1], "info"))
 };
 
-declare function c4a:inigo-cell-score($game, $x, $y, $cell){
-  let $fake-cell := element cell { string ($game/players/player[1]/@color)}
-  return max (
-  for $pair as element (pair) in $c4a:dirpairs//pair 
-    return c4a:count-run($game, $y, $x, $fake-cell, 0, $pair/dir[1]) +
-      c4a:count-run($game, $y, $x, $fake-cell, 0, $pair/dir[2]) 
-  )
+declare function c4a:run-dir-length ($game, $x, $y, $dirpair, $color){
+  let $fake-cell := element cell { $color }
+  return
+    c4a:count-run($game, $y, $x, $fake-cell, 0, $dirpair/dir[1]) +
+    c4a:count-run($game, $y, $x, $fake-cell, 0, $dirpair/dir[2]) 
+};
+
+declare function c4a:inigo-cell-color-score ($game, $x, $y, $color) {
+  max (for $pair as element (pair) in $c4a:dirpairs//pair 
+  return c4a:run-dir-length ($game, $x, $y, $pair, $color))
+};
+
+declare function c4a:inigo-cell-score($game, $x, $y) {
+  let $inigo-color := string ($game//player[.='inigo']/@color)
+  let $other-color := string ($game//player[.!='inigo']/@color)
+  let $inigo-score := c4a:inigo-cell-color-score ($game, $x, $y, $inigo-color)
+  let $other-score := c4a:inigo-cell-color-score ($game, $x, $y, $other-color)
+  return $c4a:inigo-scores[$inigo-score+1] + ($c4a:inigo-scores[$other-score+1] div 2)
 };
 
 declare function c4a:inigo-grid($game)
@@ -160,7 +172,7 @@ declare function c4a:inigo-grid($game)
             if ($cell != '') 
               then ()
             else (
-              attribute score {c4a:inigo-cell-score($game, $x, $y, $cell)},
+              attribute score {c4a:inigo-cell-score($game, $x, $y)},
               let $below := c4a:get-cell($game, $y+1, $x)
               return if (not ($below) or $below != '') then attribute playable {'true'} else ()
             )
@@ -179,7 +191,6 @@ declare function c4a:inigo ($game)
   return c4a:place-circle ($game, $game/players/player[1], xs:int($col))
 };
 
-
 declare function c4a:fezzik ($game)
 {
   let $cell := ($game//cell[.=''])[1]
@@ -195,11 +206,11 @@ declare function c4a:is-bot($player)
 declare function c4a:bot-play ($game)
 {
   let $bot := $game/players/player[1]
-  where c4a:is-bot($bot)
+  where c4a:is-bot($bot) and not ($game/@winner)
   return if ($bot = "fezzik") 
     then c4a:fezzik ($game)
-    else if ($bot = "inigo")
-      then c4a:inigo ($game)
-      else c4a:fezzik ($game)
+  else if ($bot = "inigo")
+    then c4a:inigo ($game)
+  else c4a:fezzik ($game)
 };
 

@@ -26,7 +26,8 @@ declare function c4:players($game as element(game), $user as element(player)?) {
 declare function c4:main() {
   let $game-id := util:param ($lux:http, 'game')
   let $game := collection()/game[@id=$game-id]
-  let $winner := if ($game/@winner) then $game/@winner else ()
+  (: let $winner := if ($game/@winner) then $game/@winner else () :)
+  let $winner := $game/@winner
   let $player-name := util:param($lux:http, 'player')
   let $players := $game/players/player
   let $player := $players[.=$player-name]
@@ -52,8 +53,10 @@ declare function c4:main() {
 
       else if ($player is $active) then
         (attribute active { "true" }, <blink>Your turn</blink> )
+
       else if ($active) then
         concat($active, "'s turn")
+
       else (
         "Waiting for some competition to show up, ",
         " or play against: ", 

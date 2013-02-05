@@ -49,7 +49,6 @@ declare function c4:join-game()
       <div>
         { $insert }
         Player {$name} joined;  
-        (:FIXME - if $name=(bot) then use other player :)
         <a href="view.xqy?game={$game-id}&amp;player={$new-name}">Proceed to game.</a>
       </div>
       return layout:outer('/connect4/start.xqy', $body)

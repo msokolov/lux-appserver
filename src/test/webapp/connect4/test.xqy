@@ -14,12 +14,13 @@ declare function c4:test ()
   let $game := collection()/game[@id=$game-id]
   let $inigo-grid := c4a:inigo-grid($game)
   return layout:outer('/connect4/test.xqy', 
-    (c4a:draw-grid ($game),c4a:draw-inigo-grid ($inigo-grid),
-    
+    c4a:draw-inigo-grid ($inigo-grid)
+(:    
     <textarea rows="24" cols="80">{ 
     $inigo-grid
                                   } </textarea>
-                ))
+:)
+                )
 };
 
 
