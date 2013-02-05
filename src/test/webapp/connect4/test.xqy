@@ -12,10 +12,15 @@ declare function c4:test ()
 {
   let $game-id := util:param ($lux:http, 'game')
   let $game := collection()/game[@id=$game-id]
-  let $inigo-grid := c4a:inigo-grid($game)
+  let $inigo-grid := c4a:inigo-grid($game, $game//player[2])
   return layout:outer('/connect4/test.xqy', 
-    c4a:draw-inigo-grid ($inigo-grid)
+    c4a:draw-vezzini ($game, $game//player[2])
 (:    
+    <div>{
+      for $i in (1 to 7) return
+        c4a:draw-vezzini-grid ($game)
+    }</div>
+
     <textarea rows="24" cols="80">{ 
     $inigo-grid
                                   } </textarea>

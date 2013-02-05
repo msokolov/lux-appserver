@@ -1,3 +1,14 @@
+* Vezzini
+Calculate an Inigo-grid.  
+
+If there is a winning move (score > 100?), 
+or level >= max-level, get the max score
+return that score * -1 (if not my turn)
+
+otherwise, 
+
+For each move, calculate the next grid and recurse
+
 * gameplay
 ** drop a circle
 when player is current and game is not complete

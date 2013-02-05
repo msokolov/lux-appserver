@@ -103,18 +103,52 @@ declare function c4a:draw-inigo-grid ($grid as element(grid)?)
 }</table>
 };
 
+declare function c4a:draw-vezzini ($game as element(game)?, $player)
+{
+<table class="c4grid">{
+  <tr>{
+    for $vs in c4a:vezzini-scores($game, $player, 1) return
+    <th>{$vs}</th>
+  }</tr>,
+  for $row at $j in $game/grid/row
+  return <tr>{
+  for $cell at $i in $row/cell return
+  <td class="circle" col="{$i}">{
+    let $color := $cell/string()
+    where $color 
+    return attribute style { concat ("background: ", $color, ";") }
+  }</td>
+  }</tr>
+}</table>
+};
+
 declare function c4a:place-circle (
   $game as element(game), 
   $player as element(player), 
-  $col as xs:int)
+  $col as xs:integer)
+as element (game)
+{
+  let $updated-game := c4a:update-game ($game, $player, $col)
+  let $checked-game := c4a:check-game ($updated-game)
+  let $insert := (
+    lux:insert (concat('/connect4/', $game/@id), $checked-game),
+    lux:commit())
+  return ($checked-game, lux:log(($insert,"hey")[1], "info"))
+};
+
+declare function c4a:update-game (
+  $game as element(game), 
+  $player as element(player), 
+  $col as xs:integer)
 as element (game)
 {
   (: should always = 1 :)
   let $iplayer := count ($game/players/player[. << $player]) + 1
-  let $log := lux:log (count($game/grid/row/cell[$col][empty(node())]), "info")
   let $selected := ($game/grid/row/cell[$col][empty(node())])[last()]
-  return if (not($selected or $log)) then <game status="error">There's no space left in that column - try again</game> else
-  let $updated-game := 
+  return if (not($selected)) 
+    then 
+    <game status="error">There's no space left in that column - try again</game> 
+  else
   <game>{
     $game/@id, 
     attribute modified { current-dateTime() },
@@ -133,11 +167,6 @@ as element (game)
       }</row>
     }</grid>
   }</game>
-  let $checked-game := c4a:check-game ($updated-game)
-  let $insert := (
-    lux:insert (concat('/connect4/', $game/@id), $checked-game),
-    lux:commit())
-  return ($checked-game, lux:log(($insert,"hey")[1], "info"))
 };
 
 declare function c4a:run-dir-length ($game, $x, $y, $dirpair, $color){
@@ -152,15 +181,15 @@ declare function c4a:inigo-cell-color-score ($game, $x, $y, $color) {
   return c4a:run-dir-length ($game, $x, $y, $pair, $color))
 };
 
-declare function c4a:inigo-cell-score($game, $x, $y) {
-  let $inigo-color := string ($game//player[.='inigo']/@color)
-  let $other-color := string ($game//player[.!='inigo']/@color)
-  let $inigo-score := c4a:inigo-cell-color-score ($game, $x, $y, $inigo-color)
+declare function c4a:inigo-cell-score($game, $x, $y, $player) {
+  let $my-color := string ($game//player[. is $player]/@color)
+  let $other-color := string ($game//player[not(. is $player)]/@color)
+  let $inigo-score := c4a:inigo-cell-color-score ($game, $x, $y, $my-color)
   let $other-score := c4a:inigo-cell-color-score ($game, $x, $y, $other-color)
   return $c4a:inigo-scores[$inigo-score+1] + ($c4a:inigo-scores[$other-score+1] div 2)
 };
 
-declare function c4a:inigo-grid($game)
+declare function c4a:inigo-grid($game, $player)
 {
   element grid {
     for $row at $y in $game/grid/row 
@@ -172,7 +201,7 @@ declare function c4a:inigo-grid($game)
             if ($cell != '') 
               then ()
             else (
-              attribute score {c4a:inigo-cell-score($game, $x, $y)},
+              attribute score {c4a:inigo-cell-score($game, $x, $y, $player)},
               let $below := c4a:get-cell($game, $y+1, $x)
               return if (not ($below) or $below != '') then attribute playable {'true'} else ()
             )
@@ -181,26 +210,70 @@ declare function c4a:inigo-grid($game)
   }
 };
 
+(: return the (score, column index) of the move with the max score,
+   calling vezzini-score to get them :)
+declare function c4a:vezzini-max($game, $player, $depth)
+{
+  let $scores := c4a:vezzini-scores ($game, $player, $depth)
+  let $max := max ($scores)
+  return ($max, (for $s at $i in $scores where $s = $max return $i)[1])
+};
+
+(: return the scores of each move by playing the move and calling vezzini-score :)
+declare function c4a:vezzini-scores($game, $player, $depth)
+  as xs:double+
+{
+  for $col in (1 to count($game//row[1]/cell))
+    let $new-game := c4a:update-game ($game, $player, $col)
+    return if ($new-game[@status="error"]) 
+      then 0 
+    else
+      c4a:vezzini-score ($new-game, $game//player[not(. is $player)], $depth + 1)
+};
+
+(: return the score of the move with the max score, terminating 
+   at max-depth, or end of game
+ :)
+declare function c4a:vezzini-score($game, $player, $depth)
+  as xs:double
+{
+  let $grid := c4a:inigo-grid($game, $game/players/player[1])
+  let $max-score := max ($grid//cell[@playable]/@score)
+  let $sgn := if ($depth mod 2 eq 1) then 1 else -1
+  return if ($depth ge 3 or $max-score ge 100) 
+    then $sgn * $max-score
+  else
+    c4a:vezzini-max ($game, $player, $depth)[1]
+};
+
+declare function c4a:vezzini($game)
+{
+  let $vz := $game/players/player[1]
+  let $move := c4a:vezzini-max ($game, $vz, 1)
+  let $col := $move[2]
+  return c4a:place-circle ($game, $vz, $col)
+};
+
 declare function c4a:inigo ($game)
 {
-  let $grid := c4a:inigo-grid($game)
+  let $grid := c4a:inigo-grid($game, $game/players/player[1])
   let $play := (for $cell in $grid//cell[@playable]
   order by $cell/@score descending
   return $cell)[1]
   let $col := count($play/preceding-sibling::cell) + 1
-  return c4a:place-circle ($game, $game/players/player[1], xs:int($col))
+  return c4a:place-circle ($game, $game/players/player[1], $col)
 };
 
 declare function c4a:fezzik ($game)
 {
   let $cell := ($game//cell[.=''])[1]
   let $col := count ($cell/preceding-sibling::cell) + 1
-  return c4a:place-circle ($game, $game/players/player[1], xs:int($col))
+  return c4a:place-circle ($game, $game/players/player[1], $col)
 };
 
 declare function c4a:is-bot($player)
 {
-  $player = ("fezzik","inigo")
+  $player = ("fezzik", "inigo", "vezzini")
 };
 
 declare function c4a:bot-play ($game)
@@ -211,6 +284,8 @@ declare function c4a:bot-play ($game)
     then c4a:fezzik ($game)
   else if ($bot = "inigo")
     then c4a:inigo ($game)
+  else if ($bot = "vezzini")
+    then c4a:vezzini ($game)
   else c4a:fezzik ($game)
 };
 
