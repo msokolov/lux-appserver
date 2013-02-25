@@ -54,7 +54,7 @@ declare function demo:view ()
             lux:transform (doc($stylesheet-name), lux:highlight ($query, $doc), ("query", $query))
         else
             (<h3>{$doctype}</h3>,<textarea cols="80" rows="12">{$doc}</textarea>)
-    return layout:outer ('/view.xqy', (), ($pagination, $parts[1])) 
+    return layout:outer ('/view.xqy', (), ($pagination, $parts)) 
 };
 
 demo:view()

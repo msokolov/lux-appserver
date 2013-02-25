@@ -1,5 +1,6 @@
 declare namespace file="http://expath.org/ns/file";
 declare namespace demo="http://luxdb.net/demo";
+declare namespace html="http://www.w3.org/1999/xhtml";
 
 import module namespace http="http://expath.org/ns/http-client";
 
@@ -10,7 +11,7 @@ declare function demo:load-from-http ($url as xs:string)
 {
   let $request := <http:request method="get" href="{$url}" />
   let $response := http:send-request ($request)
-  let $log := lux:log ($response[2]/descendant::TITLE[1], "debug")
+  let $log := lux:log (concat("title=", $response[2]/descendant::TITLE[1]), "debug")
   return ($log, $response[2])
 };
 
@@ -34,22 +35,32 @@ as xs:string*
 declare function demo:transform-load ($url as xs:string, $doc as document-node(), $xsl as document-node())
   as xs:string
 {
-    let $basename := replace($url, "^.*/(.*)\.xml", "$1")
+    let $basename := replace($url, "^.*/(.*)(\.(ht|x)ml)?", "$1")
     let $uri := concat ("/", $basename, ".xml")
     let $uri2 := concat ($uri, lux:log(("insert transformed ", $uri), "debug"))
     let $transformed := lux:transform ($xsl, $doc, ("uri-base", $basename))
     return (lux:insert ($uri, $transformed), $uri2)
 };
 
-declare function demo:default-load ($url as xs:string, $doc as document-node())
-  as xs:string
+declare function demo:chunk-words ($basename as xs:string, $i, $words as xs:string*)
 {
-    let $basename := replace($url, "^.*/(.*)\.xml", "$1")
-    return
-    for $e at $i in $doc/*/* 
-    let $uri := concat ($basename, "-", $i, ".xml")
-    let $uri2 := concat ($uri, lux:log(("insert default ", $uri), "debug"))
-    return (lux:insert ($uri, $e), $uri2)
+  let $uri := concat ($basename, "-", $i, ".xml")
+  let $e := subsequence($words,1,250)
+  let $uri2 := concat ($uri, lux:log(("insert default ", $uri, " ", $e), "debug"))
+  return (lux:insert ($uri, <chunk uri="{$uri}">{$e}</chunk>), $uri2,
+    if (count($words) gt 250)
+      then demo:chunk-words($basename, $i+1, subsequence($words,250)) 
+    else ()
+  )
+};
+
+declare function demo:default-load ($url as xs:string, $doc as document-node())
+  as xs:string*
+{
+    let $basename := "/chunk"
+    let $words := tokenize (string($doc//body), "\s+")
+    let $words2 := ($words, lux:log ($doc//html:body, "info"))
+    return demo:chunk-words ($basename, 1, $words2)
 };
 
 declare function demo:load-document ()
