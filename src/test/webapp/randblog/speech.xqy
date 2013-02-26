@@ -1,6 +1,7 @@
 xquery version "1.0";
 
 declare namespace local="http://luxdb.net/local";
+declare namespace html="http://www.w3.org/1999/xhtml";
 
 import module namespace layout="http://luxdb.net/demo/layout" at "../layout.xqy";
 
@@ -25,15 +26,17 @@ declare function local:generate-next-word ($word, $length, $seed)
   let $r := local:rand ($seed, $nspeech)
   let $speech := (lux:search($word))[$r[1]]
   let $hilited := lux:highlight($word, $speech)
-  let $nwords := count ($hilited//B)
+  let $nwords := count ($hilited//html:B)
   let $r1 := local:rand ($r[2], $nwords)
-  let $next-node := $hilited/descendant::B[$r1[1]]/following-sibling::node()[1]
+  let $next-node := $hilited/descendant::html:B[$r1[1]]/following-sibling::node()[1]
   let $next-word := tokenize($next-node, "\s+")[matches(., "\w")][1]
-(:  return ($nspeech, $nwords, $next-word, count($next-word))  :)
-  return if ($next-word) then
-    local:generate ($next-word, $length - 1, $r1[2]) 
-  else if ($length gt 0) then (
-    if ($nspeech gt 5) then
+(:
+  return ($nspeech, $nwords, $next-word, count($next-word), $hilited//html:B)
+:)
+  return if ($length gt 0) then (
+    if ($next-word) then
+      local:generate ($next-word, $length - 1, $r1[2]) 
+    else if ($nspeech gt 5) then
       local:generate-next-word ($word, $length - 1, $r1[2]) 
     else
       local:generate-next-word (local:randword()[1], $length - 1, $r1[2])
@@ -43,7 +46,7 @@ declare function local:generate-next-word ($word, $length, $seed)
 declare function local:generate ($word, $length, $seed)
 {
   if ($length gt 0 and $word) then 
-    ($word, local:generate-next-word (concat('"', $word, '"'), $length, $seed))
+    ($word, local:generate-next-word (replace($word, "\W", ""), $length, $seed))
   else
     $word
 };
