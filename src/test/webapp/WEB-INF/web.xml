@@ -15,9 +15,9 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_5.xsd"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          version="2.5"
          metadata-complete="true"
 >
@@ -83,33 +83,74 @@
       this dispatcher as <dispatcher>FORWARD</dispatcher>.
     -->
     <filter-name>SolrRequestFilter</filter-name>
-    <dispatcher>REQUEST</dispatcher>  
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
   <servlet>
-    <servlet-name>default</servlet-name>
-    <servlet-class>org.mortbay.jetty.servlet.DefaultServlet</servlet-class>
+    <servlet-name>Zookeeper</servlet-name>
+    <servlet-class>org.apache.solr.servlet.ZookeeperInfoServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>LoadAdminUI</servlet-name>
+    <servlet-class>org.apache.solr.servlet.LoadAdminUiServlet</servlet-class>
+  </servlet>
+  
+  <!-- Remove in Solr 5.0 -->
+  <!-- This sends SC_MOVED_PERMANENTLY (301) for resources that changed in 4.0 -->
+  <servlet>
+    <servlet-name>RedirectOldAdminUI</servlet-name>
+    <servlet-class>org.apache.solr.servlet.RedirectServlet</servlet-class>
     <init-param>
-      <param-name>resourceBase</param-name>
-      <param-value>c:/users/sokolov/workspace/lux/src/main/app-server</param-value>
+      <param-name>destination</param-name>
+      <param-value>${context}/#/</param-value>
     </init-param>
   </servlet>
 
+  <servlet>
+    <servlet-name>RedirectOldZookeeper</servlet-name>
+    <servlet-class>org.apache.solr.servlet.RedirectServlet</servlet-class>
+    <init-param>
+      <param-name>destination</param-name>
+      <param-value>${context}/zookeeper</param-value>
+    </init-param>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>RedirectLogging</servlet-name>
+    <servlet-class>org.apache.solr.servlet.RedirectServlet</servlet-class>
+    <init-param>
+      <param-name>destination</param-name>
+      <param-value>${context}/#/~logging</param-value>
+    </init-param>
+  </servlet>
+  
   <servlet-mapping>
-    <servlet-name>default    </servlet-name>
-    <url-pattern>/*    </url-pattern>
+    <servlet-name>RedirectOldAdminUI</servlet-name>
+    <url-pattern>/admin/</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>RedirectOldAdminUI</servlet-name>
+    <url-pattern>/admin</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>RedirectOldZookeeper</servlet-name>
+    <url-pattern>/zookeeper.jsp</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>RedirectLogging</servlet-name>
+    <url-pattern>/logging</url-pattern>
   </servlet-mapping>
 
-
-  <servlet>
-    <servlet-name>Logging</servlet-name>
-    <servlet-class>org.apache.solr.servlet.LogLevelSelection</servlet-class>
-  </servlet>
-
+  <!-- Servlet Mapping -->
   <servlet-mapping>
-    <servlet-name>Logging</servlet-name>
-    <url-pattern>/admin/logging</url-pattern>
+    <servlet-name>Zookeeper</servlet-name>
+    <url-pattern>/zookeeper</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>LoadAdminUI</servlet-name>
+    <url-pattern>/admin.html</url-pattern>
   </servlet-mapping>
   
   <mime-mapping>
@@ -117,5 +158,15 @@
     <!-- per http://www.w3.org/TR/2006/PR-xslt20-20061121/ -->
     <mime-type>application/xslt+xml</mime-type>
   </mime-mapping>
+
+  <mime-mapping>
+    <extension>.xsl</extension>
+    <!-- per http://www.w3.org/TR/2006/PR-xslt20-20061121/ -->
+    <mime-type>application/xslt+xml</mime-type>
+  </mime-mapping>
+
+  <welcome-file-list>
+    <welcome-file>admin.html</welcome-file>
+  </welcome-file-list>
 
 </web-app>
