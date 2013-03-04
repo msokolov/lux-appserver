@@ -42,7 +42,7 @@ public class AppServer {
     
     private ServletHolder appForwarderHolder;
     private ServletHolder resourcesHolder;
-    private static WebAppContext luxWebapp;
+    private static WebAppContext solrWebApp;
     private Server server;
     
     public static void main (String ... argv) throws Exception {
@@ -76,11 +76,11 @@ public class AppServer {
         
         if (appForwarderHolder.getInitParameter("solr-host") == null) {
             // embedded solr webapp
-            luxWebapp = new WebAppContext(handler, solrWebappFolder, solrForwardPath);
+            solrWebApp = new WebAppContext(handler, solrWebappFolder, solrForwardPath);
             xqueryForward.setServletPath (solrForwardPath);
             xqueryForward.setForwardPath (luxForwardPath);
             xqueryForward.setSolrPort (port);
-            handler.setSolrWebapp (luxWebapp);
+            handler.setSolrWebapp (solrWebApp);
         }
 
         server = new Server(port);
