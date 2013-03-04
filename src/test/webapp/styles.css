@@ -64,6 +64,12 @@ div.speech-container { margin-bottom: 1em; }
 .source { font-style: italic }
 .speech-info { color: #666; margin-left: 1em }
 
+/******** query tool styles ********/
+#left { float: left; width: 10 em; }
+#right { margin-left: 10em; }
+#results { width: 98%; height: 100%; margin: 1em; background: #fff; }
+.selected { font-weight: bold; }
+
 /************ shakespeare scene display *******/
 .scene { margin-left: 1em }
 .hi { background: #ff0; font-weight: bold }

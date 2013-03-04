@@ -4,9 +4,11 @@ function load_document (url) {
     $.ajax({
         url: 'load-document.xqy?url=' + url,
         // async: false,
-        dataType: 'html'
+        // dataType: 'html'
     }).done(function (data) {
         $('#loader-report').append (data);
         $('#loader-report').trigger ('create');
+    }).fail(function(xhr, status, error) {
+        $('#loader-report').append ("An error occurred: " + error);
     });
 }

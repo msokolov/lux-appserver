@@ -5,12 +5,16 @@ import module namespace config="http://luxdb.net/demo/config" at "config.xqy";
 declare function layout:render-nav ($current-url as xs:string)
 {
 let $nav := (
+(:
   <item url="{$config:root-url}browse.xqy">source</item>,
+:)
   <item url="{$config:root-url}index.xqy">search</item>, 
+  <item url="{$config:root-url}query.xqy">query</item>, 
   <item url="{$config:root-url}read-ibiblio.xqy">load shakespeare</item>,
-  <item url="{$config:root-url}randblog/read.xqy">load from web</item>,
+  <item url="{$config:root-url}randblog/read.xqy">load from web</item>
+(:  
   <item url="{$config:root-url}randblog/speech.xqy">random text</item>
-(:  <item url="{$config:root-url}maven-get.xqy">maven</item> :)
+<item url="{$config:root-url}maven-get.xqy">maven</item> :)
 )
 return <div><ul class="hlist">{
   for $item in $nav 
@@ -36,7 +40,7 @@ declare function layout:outer ($current-url as xs:string, $body as node()*, $hea
     <div id="masthead">
       <h1 class="logo">
         <a href="{$config:root-url}index.xqy">
-          <img class="logo" src="{$config:root-url}img/sunflwor52.png" alt="Lux" height="40" /> Lux Demo
+          <img class="logo" src="{$config:root-url}img/sunflwor52.png" alt="Lux" height="40" border="0" /> Lux Demo
         </a>
       </h1>
       { layout:render-nav ($current-url), $header}

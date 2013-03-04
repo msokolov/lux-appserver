@@ -1,6 +1,5 @@
 declare namespace file="http://expath.org/ns/file";
 declare namespace demo="http://luxdb.net/demo";
-declare namespace html="http://www.w3.org/1999/xhtml";
 
 import module namespace http="http://expath.org/ns/http-client";
 
@@ -58,9 +57,8 @@ declare function demo:default-load ($url as xs:string, $doc as document-node())
   as xs:string*
 {
     let $basename := "/chunk"
-    let $words := tokenize (string($doc//body), "\s+")
-    let $words2 := ($words, lux:log ($doc//html:body, "info"))
-    return demo:chunk-words ($basename, 1, $words2)
+    let $words := tokenize ($doc, "\s+")
+    return demo:chunk-words ($basename, 1, $words)
 };
 
 declare function demo:load-document ()

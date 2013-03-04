@@ -8,11 +8,7 @@ import module namespace search="http://luxdb.net/search" at "search-lib.xqy";
 
 declare variable $lux:http as document-node() external;
 
-(: Search Page
-    
-    TODO: document parameters, autocomplete behavior, pagination, view
-          dispatcher, search results formatting :)
-
+(: Search Page :)
 
 declare function demo:search-results ($query, $start as xs:integer, $page-size as xs:integer, $sort as xs:string?, $total as xs:integer)
 {
