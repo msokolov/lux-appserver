@@ -146,7 +146,7 @@
               <goal>copy-dependencies</goal>
             </goals>
             <configuration>
-              <excludeArtifactIds>antlr,httpunit,junit,xalan,hamcrest-core,dom4j,js,struts-core,struts-taglib,struts-tiles,xmlParserAPIs,xom,zookeeper,servlet-api</excludeArtifactIds>
+              <excludeArtifactIds>antlr,httpunit,junit,xalan,hamcrest-core,dom4j,js,struts-core,struts-taglib,struts-tiles,xmlParserAPIs,xom,servlet-api</excludeArtifactIds>
             </configuration>
           </execution>
         </executions>
