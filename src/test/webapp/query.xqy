@@ -13,7 +13,6 @@ declare function demo:javascript-postamble() {
   <div>
     <script src="js/jquery-1.8.2.min.js"></script>
     <script src="js/query-history.js"></script>
-    <script src="js/chrome-xml-iframe-hack.js"></script>
   </div>
 };
 
@@ -36,7 +35,7 @@ declare function demo:main () {
           <br/>
           <input type="submit" value="go" />   
           (use ctrl-Enter)
-          <input type="button" value="save" onclick="saveQuery()" />
+          <input type="button" value="save new" onclick="saveQuery()" />
           (max 10)
         </form>
       </div>

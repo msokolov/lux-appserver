@@ -28,14 +28,17 @@ function setCurrentQuery (n) {
 }
 
 function saveQuery () {
-    console.log ("saveQuery()");
+    console.log ("saveQuery(): adding new query");
     var q = $('#q').val();
     // add new
     var n = localStorage['lux-query-history-size'];
+    if (n >= 10) {
+        deleteQuery (0);
+        --n;
+    }
     setQuery (n, q);
     insertQueryMenu (n, q);
-    setCurrentQuery (0);
-    console.log ("saveQuery(): adding new query");
+    setCurrentQuery (n);
 }
 
 function updateQuery () {
@@ -46,15 +49,21 @@ function updateQuery () {
     var i = selection.index();
     var count = getQueryCount();
     // update the menu
-    $('#query-history>li.selected>a').text (q.substring(0,20));
+    $('#query-history>li.selected>a').eq(0).text (formatQuery(q));
     // update the stored query
     setQuery (count - i - 1, q);
 }
 
+function formatQuery (q) {
+    var pieces = q.split(";");
+    return pieces[pieces.length-1].substring(0, 20);
+}
+
 function setQuery (n, q) {
+    console.log ("setQuery " + n);
     var count = localStorage['lux-query-history-size'];
     if (n >= count) {
-        localStorage['lux-query-history-size'] = n + 1;
+        localStorage['lux-query-history-size'] = parseInt(n) + 1;
     }
     return localStorage["lux-query-history-" + n] = q;
 }
@@ -67,23 +76,32 @@ function getQueryCount () {
     return parseInt (localStorage['lux-query-history-size']);
 }
 
+function deleteQuery (n) {
+    delete localStorage["lux-query-history-" + n];
+    populateQueryHistory();
+}
+
 /*
  * insert a new query at the head of the menu, numbered i
  */
 function insertQueryMenu (i, q) {
-    $('#query-history').prepend ('<li><a href="javascript:void(0)" onclick="selectQuery(' + i + ')">' + q.substring(0,20) + '</a></li>');
-}
-
-/*
- * insert a new query at the tail of the menu, numbered i
- */
-function appendQueryMenu (i, q) {
-    $('#query-history').append ('<li><a href="javascript:void(0)" onclick="selectQuery(' + i + ')">' + q.substring(0,20) + '</a></li>');
+    $('#query-history').prepend 
+        ('<li>' + 
+         '<a href="javascript:void(0)" onclick="selectQuery(' + i + ')">' + 
+         formatQuery(q) + 
+         '</a>' + 
+         /*
+         '<a class="delete-query" href="javascript:void(0)" onclick="deleteQuery(' + i + ')">' + 
+         " x" +
+         '</a>' + 
+         */
+         '</li>');
 }
 
 function populateQueryHistory () {
+    $('#query-history').children().remove();
     var n = getQueryCount();
-    // console.log ("populate " + n);
+    console.log ("populate " + n);
     /** get all the queries, put them in an array, and store them again.
         This way we can clean out any gaps or weirdness that may have occurred
         since local storage is not an array or anything.
@@ -93,7 +111,7 @@ function populateQueryHistory () {
     for (var i = 0; i < n; i++) {
         var q = getQuery (i);
         delete localStorage['lux-query-history-' + i];
-        if (q) {
+        if (q && j < 10) {
             queries[j++] = q;
         }
     }
@@ -122,3 +140,6 @@ $('#q').keydown(function(event) {
 $('#q').focus();
 
 populateQueryHistory();
+if (queries.length > 0) {
+    selectQuery (queries.length-1);
+}

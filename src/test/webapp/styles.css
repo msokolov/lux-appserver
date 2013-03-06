@@ -66,9 +66,10 @@ div.speech-container { margin-bottom: 1em; }
 
 /******** query tool styles ********/
 #left { float: left; width: 10 em; }
-#right { margin-left: 10em; }
+#right { margin-left: 13em; }
 #results { width: 98%; height: 100%; margin: 1em; background: #fff; }
 .selected { font-weight: bold; }
+.delete-query { color: red }
 
 /************ shakespeare scene display *******/
 .scene { margin-left: 1em }
