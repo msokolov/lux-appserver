@@ -10,8 +10,9 @@ let $nav := (
 :)
   <item url="{$config:root-url}index.xqy">search</item>, 
   <item url="{$config:root-url}query.xqy">query</item>, 
-  <item url="{$config:root-url}read-ibiblio.xqy">load shakespeare</item>,
-  <item url="{$config:root-url}randblog/read.xqy">load from web</item>
+  <item url="{$config:root-url}read-ibiblio.xqy">load ibiblio (shakespeare)</item>,
+  <item url="{$config:root-url}randblog/read.xqy">load from web</item>,
+  <item url="{$config:root-url}read-exist.xqy">load from eXist</item>
 (:  
   <item url="{$config:root-url}randblog/speech.xqy">random text</item>
 <item url="{$config:root-url}maven-get.xqy">maven</item> :)

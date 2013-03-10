@@ -53,12 +53,21 @@ declare function demo:chunk-words ($basename as xs:string, $i, $words as xs:stri
   )
 };
 
+(:
 declare function demo:default-load ($url as xs:string, $doc as document-node())
   as xs:string*
 {
     let $basename := "/chunk"
     let $words := tokenize ($doc, "\s+")
     return demo:chunk-words ($basename, 1, $words)
+};
+:)
+
+declare function demo:default-load ($url as xs:string, $doc as document-node())
+{
+    let $uri := (substring-after($url, "/exist/rest/db"), substring-after($url, ":/"), $url)[1]
+    let $words := tokenize ($doc, "\s+")
+    return (lux:insert ($uri, $doc), $uri)
 };
 
 declare function demo:load-document ()
