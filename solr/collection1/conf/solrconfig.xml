@@ -299,8 +299,11 @@
          have some sort of hard autoCommit to limit the log size.
       -->
      <autoCommit> 
-       <maxTime>15000</maxTime> 
-       <openSearcher>false</openSearcher> 
+       <!-- every ten minutes -->
+       <maxTime>600000</maxTime> 
+       <!-- or every 200th insert, whichever is first -->
+       <maxDocs>200</maxDocs> 
+       <openSearcher>true</openSearcher> 
      </autoCommit>
 
     <!-- softAutoCommit is like autoCommit except it causes a
@@ -308,11 +311,9 @@
          but does not ensure that data is synced to disk.  This is
          faster and more near-realtime friendly than a hard commit.
       -->
-     <!--
        <autoSoftCommit> 
          <maxTime>1000</maxTime> 
        </autoSoftCommit>
-      -->
 
     <!-- Update Related Event Listeners
          
