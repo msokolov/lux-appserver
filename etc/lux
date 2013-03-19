@@ -1,2 +1,4 @@
 #!/bin/sh
-java -cp .:lib/\* lux.appserver.AppServer
+LUX_HOME=${LUX_HOME:-.}
+echo LUX_HOME=$LUX_HOME
+java -cp $LUX_HOME:$LUX_HOME/lib/\* lux.appserver.AppServer
