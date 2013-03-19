@@ -1,0 +1,40 @@
+#!/bin/bash
+#
+# Run-level Startup script for the Lux Application Server
+#
+# chkconfig: 345 92 18
+# description: Startup/Shutdown Lux Application Server
+
+LUX_HOME="/proj/lux-appserver"
+LUX_USER=sokolov
+
+# if the executables do not exist -- display error
+
+if [ ! -f $LUX_HOME/lux ]
+then
+        echo "Lux startup failed: lux not found"
+        exit 1
+fi
+
+case "$1" in
+    start)
+        echo -n "Starting Lux: "
+        su - $LUX_USER -c "$LUX_HOME/lux"
+        touch /var/lock/subsys/lux
+        echo "OK"
+        ;;
+    stop)
+        echo -n "Stopping Lux: "
+        pkill lux
+        rm -f /var/lock/subsys/lux
+        echo "OK"
+        ;;
+    reload|restart)
+        $0 stop
+        $0 start
+        ;;
+    *)
+        echo "Usage: $0 start|stop|restart|reload"
+        exit 1
+esac
+exit 0
