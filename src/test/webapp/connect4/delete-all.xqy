@@ -1,4 +1,4 @@
-let $delete := lux:delete()
+let $delete := lux:delete('lux:/')
 let $commit := lux:commit()
 return
 <html>

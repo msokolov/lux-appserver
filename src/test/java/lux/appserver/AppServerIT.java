@@ -85,7 +85,7 @@ public class AppServerIT {
      * Ensure that we can write multiple documents in parallel.
      */
     @Test public void testMultiThreadedWrites () throws Exception {
-        eval ("concat(lux:delete(), lux:commit(), 'OK')");
+        eval ("concat(lux:delete('lux:/'), lux:commit(), 'OK')");
         ExecutorService taskExecutor = Executors.newFixedThreadPool(1);
         for (int i = 1; i <= 30; i++) {
             taskExecutor.execute(new TestDocInsert (i));
@@ -124,7 +124,7 @@ public class AppServerIT {
      * is thread-safe.
      */
     @Test public void testMTOutputURIResolver () throws Exception {
-        eval ("concat(lux:delete(), lux:commit(), 'OK')");
+        eval ("concat(lux:delete('lux:/'), lux:commit(), 'OK')");
         long start = System.currentTimeMillis();
         ExecutorService taskExecutor = Executors.newFixedThreadPool(4);
         for (int i = 1; i <= 30; i++) {
