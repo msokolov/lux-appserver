@@ -31,7 +31,7 @@ public class AppServerIT {
     private final String APP_SERVER_PATH = "http://localhost:8080";
     private final String XQUERY_PATH = "http://localhost:8080/solr/xquery";
     private static WebClient httpclient;
-    
+
     @Test
     public void testAppServer () throws Exception {
         String path = (APP_SERVER_PATH + "/test/test1.xqy");
@@ -51,11 +51,8 @@ public class AppServerIT {
         String path = (APP_SERVER_PATH + "/test/undeclared.xqy");
         WebResponse httpResponse = httpclient.getResponse(path);
         assertEquals (400, httpResponse.getResponseCode());
-        // actually response contains an entire stack trace
-        // assertEquals ("ERROR: Variable $undeclared has not been declared", httpResponse.getResponseMessage());
+        assertEquals ("Bad Request", httpResponse.getResponseMessage());
         String response = httpResponse.getText();
-        assertTrue (httpResponse.getResponseMessage() + " does not contain expected error message", 
-                httpResponse.getResponseMessage().contains ("Variable $undeclared has not been declared"));
         assertTrue (response.contains ("Variable $undeclared has not been declared"));
     }
     
@@ -79,6 +76,13 @@ public class AppServerIT {
         String response = httpResponse.getText();
         // We need to trim since HttpUnit seems to be adding an extra newline?
         assertEquals ("This is a test", response.trim());
+    }
+    
+    @Test
+    public void testResultFormat () throws Exception {
+        String path = (XQUERY_PATH + "?q=subsequence(collection(),1,2)&lux.content-type=text/xml&wt=lux");
+        WebResponse httpResponse = httpclient.getResponse(path);
+    	assertEquals ("<results><doc><title id=\"1\">100</title><test>cat</test></doc><doc><title id=\"2\">99</title><test>cat</test></doc></results>", httpResponse.getText());
     }
     
     /*
