@@ -51,7 +51,7 @@ declare function demo:snippet ($doc as node(), $uri as xs:string, $q as xs:strin
 (: get $length text immediately to the left of (preceding) $node TODO:
 accept a list of element names that should introduce white space :)
 
-declare function demo:snip-left($node as node(), $length)
+declare function demo:snip-left($node as node()?, $length)
   as xs:string
 {
   let $prev := $node/preceding::text()[1]
@@ -70,7 +70,7 @@ declare function demo:snip-left($node as node(), $length)
   else ""
 };
 
-declare function demo:snip-right($node as node(), $length)
+declare function demo:snip-right($node as node()?, $length)
   as xs:string
 {
   let $next := $node/following::text()[1]
