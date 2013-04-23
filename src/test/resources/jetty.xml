@@ -10,11 +10,11 @@
 <!-- =============================================================== -->
 
 
-<Configure id="Server" class="lux.appserver.AppServer">
+<Configure id="Server" class="org.mortbay.jetty.Server">
 
     <!-- Increase the maximum POST size to 1 MB to be able to handle large shard requests -->
     <Call class="java.lang.System" name="setProperty">
-      <Arg>org.eclipse.jetty.Request.maxFormContentSize</Arg>
+      <Arg>org.mortbay.jetty.Request.maxFormContentSize</Arg>
       <Arg>1000000</Arg>
     </Call>
 
@@ -23,14 +23,14 @@
     <!-- =========================================================== -->
     <Set name="ThreadPool">
 
-      <New class="org.eclipse.thread.QueuedThreadPool">
+      <New class="org.mortbay.thread.QueuedThreadPool">
         <Set name="minThreads">10</Set>
         <Set name="maxThreads">10000</Set>
         <Set name="lowThreads">20</Set>
       </New>
 
       <!-- Optional Java 5 bounded threadpool with job queue 
-      <New class="org.eclipse.thread.concurrent.ThreadPool">
+      <New class="org.mortbay.thread.concurrent.ThreadPool">
         <Set name="corePoolSize">50</Set>
         <Set name="maximumPoolSize">50</Set>
       </New>
@@ -51,9 +51,9 @@
   <!--
     <Call name="addConnector">
       <Arg>
-          <New class="org.eclipse.jetty.nio.SelectChannelConnector">
+          <New class="org.mortbay.jetty.nio.SelectChannelConnector">
             <Set name="host"><SystemProperty name="jetty.host" /></Set>
-            <Set name="port"><SystemProperty name="jetty.port" default="8983"/></Set>
+            <Set name="port"><SystemProperty name="jetty.port" default="8080"/></Set>
             <Set name="maxIdleTime">30000</Set>
             <Set name="Acceptors">2</Set>
             <Set name="statsOn">false</Set>
@@ -70,9 +70,9 @@
           for typical Solr requests.  -->
     <Call name="addConnector">
       <Arg>
-          <New class="org.eclipse.jetty.bio.SocketConnector">
+          <New class="org.mortbay.jetty.bio.SocketConnector">
             <Set name="host"><SystemProperty name="jetty.host" /></Set>
-            <Set name="port"><SystemProperty name="jetty.port" default="8983"/></Set>
+            <Set name="port"><SystemProperty name="jetty.port" default="8080"/></Set>
             <Set name="maxIdleTime">50000</Set>
             <Set name="lowResourceMaxIdleTime">1500</Set>
             <Set name="statsOn">false</Set>
@@ -99,7 +99,7 @@
     <!-- =========================================================== -->
     <!--
     <Set name="sessionIdManager">
-      <New class="org.eclipse.jetty.servlet.HashSessionIdManager">
+      <New class="org.mortbay.jetty.servlet.HashSessionIdManager">
         <Set name="workerName">node1</Set>
       </New>
     </Set>
@@ -109,17 +109,17 @@
     <!-- Set handler Collection Structure                            --> 
     <!-- =========================================================== -->
     <Set name="handler">
-      <New id="Handlers" class="org.eclipse.jetty.handler.HandlerCollection">
+      <New id="Handlers" class="org.mortbay.jetty.handler.HandlerCollection">
         <Set name="handlers">
-         <Array type="org.eclipse.jetty.Handler">
+         <Array type="org.mortbay.jetty.Handler">
            <Item>
-             <New id="Contexts" class="org.eclipse.jetty.handler.ContextHandlerCollection"/>
+             <New id="Contexts" class="org.mortbay.jetty.handler.ContextHandlerCollection"/>
            </Item>
            <Item>
-             <New id="DefaultHandler" class="org.eclipse.jetty.handler.DefaultHandler"/>
+             <New id="DefaultHandler" class="org.mortbay.jetty.handler.DefaultHandler"/>
            </Item>
            <Item>
-             <New id="RequestLog" class="org.eclipse.jetty.handler.RequestLogHandler"/>
+             <New id="RequestLog" class="org.mortbay.jetty.handler.RequestLogHandler"/>
            </Item>
          </Array>
         </Set>
@@ -141,7 +141,7 @@
     <!-- =========================================================== -->
     <Call name="addLifeCycle">
       <Arg>
-        <New class="org.eclipse.jetty.deployer.ContextDeployer">
+        <New class="org.mortbay.jetty.deployer.ContextDeployer">
           <Set name="contexts"><Ref id="Contexts"/></Set>
           <Set name="configurationDir"><SystemProperty name="jetty.home" default="."/>/contexts</Set>
           <Set name="scanInterval">5</Set>
@@ -165,7 +165,7 @@
     <!-- 
     <Call name="addLifeCycle">
       <Arg>
-        <New class="org.eclipse.jetty.deployer.WebAppDeployer">
+        <New class="org.mortbay.jetty.deployer.WebAppDeployer">
           <Set name="contexts"><Ref id="Contexts"/></Set>
           <Set name="webAppDir">webapps</Set>
           <Set name="parentLoaderPriority">false</Set>
@@ -186,9 +186,9 @@
     <!-- =========================================================== -->
   <!--
     <Set name="UserRealms">
-      <Array type="org.eclipse.jetty.security.UserRealm">
+      <Array type="org.mortbay.jetty.security.UserRealm">
         <Item>
-          <New class="org.eclipse.jetty.security.HashUserRealm">
+          <New class="org.mortbay.jetty.security.HashUserRealm">
             <Set name="name">Test Realm</Set>
             <Set name="config"><SystemProperty name="jetty.home" default="."/>/etc/realm.properties</Set>
             <Set name="refreshInterval">0</Set>
@@ -208,7 +208,7 @@
   <!--
     <Ref id="RequestLog">
       <Set name="requestLog">
-        <New id="RequestLogImpl" class="org.eclipse.jetty.NCSARequestLog">
+        <New id="RequestLogImpl" class="org.mortbay.jetty.NCSARequestLog">
           <Set name="filename"><SystemProperty name="jetty.logs" default="./logs"/>/yyyy_mm_dd.request.log</Set>
           <Set name="filenameDateFormat">yyyy_MM_dd</Set>
           <Set name="retainDays">90</Set>

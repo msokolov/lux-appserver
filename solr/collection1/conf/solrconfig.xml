@@ -608,7 +608,7 @@
        ignore "/select" requests, resulting in a 404 unless a handler
        is explicitly registered with the name "/select"
     -->
-  <requestDispatcher handleSelect="false" >
+  <requestDispatcher handleSelect="true" >
     <!-- Request Parsing
 
          These settings indicate how Solr Requests may be parsed, and

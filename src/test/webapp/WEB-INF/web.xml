@@ -83,7 +83,7 @@
       this dispatcher as <dispatcher>FORWARD</dispatcher>.
     -->
     <filter-name>SolrRequestFilter</filter-name>
-    <url-pattern>/*</url-pattern>
+    <url-pattern>/solr/*</url-pattern>
   </filter-mapping>
 
   <servlet>
