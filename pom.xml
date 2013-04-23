@@ -2,14 +2,14 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>lux</groupId>
   <artifactId>lux-appserver</artifactId>
-  <version>0.7.1-SNAPSHOT</version>
+  <version>0.7.1</version>
   <name>Lux Application Server</name>
   <description>minimal web server that proxies xquery requests for Solr</description>
   <dependencies>
     <dependency>
       <groupId>lux</groupId>
       <artifactId>lux</artifactId>
-      <version>0.7.1-SNAPSHOT</version>
+      <version>0.7.1</version>
     </dependency>
   	<dependency>
       <groupId>org.eclipse.jetty</groupId>
@@ -106,7 +106,26 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>2.14</version>
+        <version>2.14.1</version>
+        <configuration>
+            <failIfNoTests>true</failIfNoTests>
+        </configuration>
+        <executions>
+          <execution>
+            <id>failsafe-integration-tests</id>
+            <phase>integration-test</phase>
+            <goals>
+                <goal>integration-test</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>failsafe-verify</id>
+            <phase>verify</phase>
+            <goals>
+                <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
@@ -117,9 +136,9 @@
           <stopPort>8000</stopPort>
           <stopKey>STOP</stopKey>
           <contextPath>/</contextPath> 
-          <webDefaultXml>src/test/resources/webdefault.xml</webDefaultXml>
-          <webXml>src/test/webapp/WEB-INF/web.xml</webXml>
-          <jettyConfig>src/test/resources/jetty.xml</jettyConfig>
+<!--           <webDefaultXml>src/test/resources/webdefault.xml</webDefaultXml> -->
+<!--           <webXml>src/test/webapp/WEB-INF/web.xml</webXml> -->
+<!--           <jettyConfig>src/test/resources/jetty.xml</jettyConfig> -->
           <systemProperties>
             <systemProperty>
               <name>org.expath.pkg.saxon.repo</name>
