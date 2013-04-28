@@ -136,9 +136,6 @@
           <stopPort>8000</stopPort>
           <stopKey>STOP</stopKey>
           <contextPath>/</contextPath> 
-<!--           <webDefaultXml>src/test/resources/webdefault.xml</webDefaultXml> -->
-<!--           <webXml>src/test/webapp/WEB-INF/web.xml</webXml> -->
-<!--           <jettyConfig>src/test/resources/jetty.xml</jettyConfig> -->
           <systemProperties>
             <systemProperty>
               <name>org.expath.pkg.saxon.repo</name>
