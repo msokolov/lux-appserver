@@ -5,6 +5,7 @@
   <version>0.6.1-SNAPSHOT</version>
   <name>Lux Application Server</name>
   <description>minimal web server that proxies xquery requests for Solr</description>
+  <packaging>war</packaging>
   <dependencies>
     <dependency>
       <groupId>lux</groupId>
@@ -102,6 +103,10 @@
             <exclude>**/log4j.properties</exclude>
           </excludes>
         </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.3</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -230,9 +235,9 @@
           <stopKey>STOP</stopKey>
           <!--<contextPath>/</contextPath>  -->
           <webDefaultXml>src/test/resources/webdefault.xml</webDefaultXml>
-          <!--<webXml>src/test/webapp/WEB-INF/web.xml</webXml> -->
+          <webXml>src/main/webapp/WEB-INF/web.xml</webXml>
           <!--<jettyConfig>src/test/resources/jetty.xml</jettyConfig> -->
-          <webAppSourceDirectory>src/test/webapp</webAppSourceDirectory>
+          <webAppSourceDirectory>src/main/webapp</webAppSourceDirectory>
           <systemProperties>
             <systemProperty>
               <name>org.expath.pkg.saxon.repo</name>
