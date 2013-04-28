@@ -1,8 +1,6 @@
 package lux.appserver;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -10,7 +8,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
@@ -28,19 +28,21 @@ import com.meterware.httpunit.WebResponse;
  */
 public class AppServerIT {
 
-    private final String APP_SERVER_PATH = "http://localhost:8080";
-    private final String XQUERY_PATH = "http://localhost:8080/solr/xquery";
+    private final String APP_SERVER_XQUERY_PATH = "http://localhost:8080/collection1/lux";
+    private final String APP_SERVER_PATH = "http://localhost:8080/lux";
+    private final String XQUERY_PATH = "http://localhost:8080/collection1/xquery";
     private static WebClient httpclient;
 
     @Test
     public void testAppServer () throws Exception {
-        String path = (APP_SERVER_PATH + "/test/test1.xqy");
+        String path = (APP_SERVER_XQUERY_PATH + "/test/test1.xqy");
         String response = httpclient.getResponse(path).getText();
         assertEquals ("<test>1 + 1 = 2</test>", response);
     }
 
-    @Test
+    @Test @Ignore
     public void testNoDirectoryListing() throws Exception {
+        // We now use the default servlet, and it *does* allow directory listings by default
         String path = (APP_SERVER_PATH + "/img");
         WebResponse response = httpclient.getResponse(path);
         assertEquals (403, response.getResponseCode());
@@ -48,17 +50,18 @@ public class AppServerIT {
     
     @Test
     public void testSyntaxError () throws Exception {
-        String path = (APP_SERVER_PATH + "/test/undeclared.xqy");
+        String path = (APP_SERVER_XQUERY_PATH + "/test/undeclared.xqy");
         WebResponse httpResponse = httpclient.getResponse(path);
         assertEquals (400, httpResponse.getResponseCode());
-        assertEquals ("Bad Request", httpResponse.getResponseMessage());
+        // solr 4 does this:
+        // assertEquals ("Bad Request", httpResponse.getResponseMessage());
         String response = httpResponse.getText();
         assertTrue (response.contains ("Variable $undeclared has not been declared"));
     }
     
     @Test
     public void testParameterMap () throws Exception {
-        String path = (APP_SERVER_PATH + "/test/test-params.xqy?p1=A&p2=B&p2=C");
+        String path = (APP_SERVER_XQUERY_PATH + "/test/test-params.xqy?p1=A&p2=B&p2=C");
         String response = httpclient.getResponse(path).getText();
         // This test depends on the order in which keys are retrieved from a java.util.HashMap
         assertEquals ("<http method=\"\"><params>" +
@@ -80,7 +83,8 @@ public class AppServerIT {
     
     @Test
     public void testResultFormat () throws Exception {
-        String path = (XQUERY_PATH + "?q=subsequence(collection(),1,2)&lux.content-type=text/xml&wt=lux");
+        verifyMultiThreadedWrites(); // store some test data
+        String path = (XQUERY_PATH + "?q=(doc('/test/1'),doc('/test/2'))&lux.content-type=text/xml&wt=lux");
         WebResponse httpResponse = httpclient.getResponse(path);
     	assertEquals ("<results><doc><title id=\"1\">100</title><test>cat</test></doc><doc><title id=\"2\">99</title><test>cat</test></doc></results>", httpResponse.getText());
     }
@@ -88,7 +92,7 @@ public class AppServerIT {
     /*
      * Ensure that we can write multiple documents in parallel.
      */
-    @Test public void testMultiThreadedWrites () throws Exception {
+    private void verifyMultiThreadedWrites () throws Exception {
         eval ("concat(lux:delete('lux:/'), lux:commit(), 'OK')");
         ExecutorService taskExecutor = Executors.newFixedThreadPool(1);
         for (int i = 1; i <= 30; i++) {
@@ -101,6 +105,13 @@ public class AppServerIT {
             WebResponse response = eval ("doc('/test/" + i + "')");
             assertEquals (createTestDocument(i).replaceAll("\\s+", ""), response.getText().replaceAll("\\s+", ""));
         }
+    }
+
+    /*
+     * Ensure that we can write multiple documents in parallel.
+     */
+    @Test public void testMultiThreadedWrites () throws Exception {
+        verifyMultiThreadedWrites();
     }
     
     class TestDocInsert implements Runnable {
@@ -186,6 +197,12 @@ public class AppServerIT {
     
     private String createTestDocument(int i) {
         return "<doc><title id=\"" + i + "\">" + (101-i) + "</title><test>cat</test></doc>";
+    }
+    
+    @Before
+    public void init () throws Exception {
+        eval ("lux:delete('lux:/')");
+        eval ("lux:commit()");
     }
     
     @BeforeClass
