@@ -1,0 +1,1 @@
+lux:count("dog")
