@@ -52,6 +52,8 @@
     [<a href="distributiondump.jsp">Distribution</a>]
     [<a href="ping">Ping</a>]
     [<a href="logging">Logging</a>]
+    <br>
+    [<a href="../lux/query.xqy">XQuery Box</a>]
   </td>
 </tr>
 
