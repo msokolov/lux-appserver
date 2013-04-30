@@ -62,7 +62,7 @@ declare function local:read ($url as xs:string?)
     else ()
       }
   </body>
-  return layout:outer("/read-exist.xqy", $body/*)
+  return layout:outer("/read-exist.xqy", $body/*, $lux:http)
 };
 
 declare function local:main () 

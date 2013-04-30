@@ -52,7 +52,7 @@ declare function c4:main() {
     <input type="button" value="erase all" onclick="javascript:if (confirm('Are you sure you want to irretrievably delete the entire contents of your database?')) location.href='delete-all.xqy'" />
     <script src="scripts.js"></script>
   </div>
-  return layout:outer('/connect4/index.xqy', $body)
+  return layout:outer('/connect4/index.xqy', $body, $lux:http)
 };
 
 c4:main()

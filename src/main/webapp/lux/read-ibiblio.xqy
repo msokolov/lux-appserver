@@ -7,6 +7,8 @@ import module namespace http="http://expath.org/ns/http-client";
 import module namespace config="http://luxdb.net/demo/config" at "config.xqy";
 import module namespace layout="http://luxdb.net/demo/layout" at "layout.xqy";
 
+declare variable $lux:http as document-node() external;
+
 declare function local:read-ibiblio ()
 {
   let $url := "http://www.ibiblio.org/xml/examples/shakespeare/"
@@ -23,9 +25,9 @@ declare function local:read-ibiblio ()
         return <li><input type="checkbox" name="selection" class="selection" value="{resolve-uri( $r/@href, $url)}" checked="checked" /> {$r/string()}</li>
       }</ul>
     </form>
-    <script src="{$config:root-url}js/jquery-1.8.2.min.js"></script>
+    <script src="{config:path('js/jquery-1.8.2.min.js', $lux:http)}"></script>
   </body>
-  return layout:outer("/read-ibiblio.xqy", $body/*)
+  return layout:outer("/read-ibiblio.xqy", $body/*, $lux:http)
 };
 
 local:read-ibiblio()

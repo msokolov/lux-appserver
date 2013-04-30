@@ -74,10 +74,10 @@ declare function maven:search-maven ()
         return <li>{$r}</li>
     }</ul>
     { search:search-pagination ($start, $results/@total, $next, $page-size) }
-    { search:javascript-postamble () }
+    { search:javascript-postamble ($lux:http) }
     </body>/*
 
-    return layout:outer('/maven-get.xqy', $body)
+    return layout:outer('/maven-get.xqy', $body, $lux:http)
 };
 
 maven:search-maven()

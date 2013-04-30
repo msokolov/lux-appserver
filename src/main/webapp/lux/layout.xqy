@@ -17,23 +17,23 @@ return <div><ul class="hlist">{
 }</ul></div>
 };
 
-declare function layout:outer ($current-url as xs:string, $body as node()*) 
+declare function layout:outer ($current-url as xs:string, $body as node()*, $http as document-node(element(http))) 
 {
-    layout:outer($current-url, $body, ())
+    layout:outer($current-url, $body, (), $http)
 };
 
-declare function layout:outer ($current-url as xs:string, $body as node()*, $header as node()*) 
+declare function layout:outer ($current-url as xs:string, $body as node()*, $header as node()*, $http as document-node( element(http))) 
 {
 <html>
   <head>
     <title>Lux Demo</title>
-    <link href="{$config:root-url}styles.css" rel="stylesheet" />
+    <link href="{config:path('styles.css', $http)}" rel="stylesheet" />
   </head>
   <body>
     <div id="masthead">
       <h1 class="logo">
-        <a href="{$config:root-url}index.xqy">
-          <img class="logo" src="{$config:root-url}img/sunflwor52.png" alt="Lux" height="40" border="0" /> Lux Demo
+        <a href="index.xqy">
+          <img class="logo" src="{config:path('img/sunflwor52.png', $http)}" alt="Lux" height="40" border="0" /> Lux Demo
         </a>
       </h1>
       { layout:render-nav ($current-url), $header}

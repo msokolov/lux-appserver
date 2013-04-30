@@ -120,12 +120,12 @@ declare function search:search-pagination ($start as xs:integer, $total as xs:in
 }</div>
 };
 
-declare function search:javascript-postamble () 
+declare function search:javascript-postamble ($http as document-node(element(http))) 
 {
 <div>
-  <script src="{$config:root-url}js/jquery-1.8.2.min.js"></script>
-  <script src="{$config:root-url}js/jquery.autocomplete.js"></script>
-  <script src="{$config:root-url}js/getQNames.js"></script>
+  <script src="{config:path('js/jquery-1.8.2.min.js', $http)}"></script>
+  <script src="{config:path('js/jquery.autocomplete.js', $http)}"></script>
+  <script src="{config:path('js/getQNames.js', $http)}"></script>
   {
     <script>
     function postform (param, value) {{
