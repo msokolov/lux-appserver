@@ -22,7 +22,7 @@
         <xsl:apply-templates>
           <xsl:with-param name="element-class" select="'xml-document'" />
         </xsl:apply-templates>
-        <script src="/lux/js/jquery-1.8.2.min.js"></script>
+        <script src="../lux/js/jquery-1.8.2.min.js"></script>
         <script>
           $('#body').click(function(event) {
             var $target = $(event.target);
