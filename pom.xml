@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>lux</groupId>
   <artifactId>lux-appserver</artifactId>
-  <version>0.6.1-SNAPSHOT</version>
+  <version>0.6.1</version>
   <name>Lux Application Server</name>
   <description>minimal web server that proxies xquery requests for Solr</description>
   <packaging>war</packaging>
@@ -10,7 +10,7 @@
     <dependency>
       <groupId>lux</groupId>
       <artifactId>lux</artifactId>
-      <version>0.6.1-SNAPSHOT</version>
+      <version>0.6.1</version>
     </dependency>
   	<dependency>
       <groupId>org.eclipse.jetty</groupId>
@@ -73,6 +73,14 @@
       <artifactId>jetty-webapp</artifactId>
       <version>8.1.8.v20121106</version>
     </dependency>
+    <dependency>
+      <!-- included since a number of our deployed solrconfigs call for it,
+           even though it's not strictly required -->
+      <groupId>org.apache.velocity</groupId>
+      <artifactId>velocity</artifactId>
+      <version>1.7</version>
+    </dependency>
+    <!-- TODO: declare servlet-api as provided -->
   </dependencies> 
   <build>
     <plugins>
@@ -107,6 +115,9 @@
       <plugin>
         <artifactId>maven-war-plugin</artifactId>
         <version>2.3</version>
+        <configuration>
+          <packagingExcludes>WEB-INF/classes/log4j.properties</packagingExcludes>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -140,7 +151,7 @@
           <scanIntervalSeconds>10</scanIntervalSeconds>
           <stopPort>8000</stopPort>
           <stopKey>STOP</stopKey>
-          <contextPath>/</contextPath> 
+          <contextPath>/solr</contextPath> 
           <systemProperties>
             <systemProperty>
               <name>org.expath.pkg.saxon.repo</name>
