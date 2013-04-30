@@ -118,14 +118,14 @@ let $body :=
       <br/>
       <input type="button" value="erase all" onclick="javascript:if (confirm('Are you sure you want to irretrievably delete the entire contents of your database?')) location.href='delete-all.xqy'" />
     </div>
-    { search:javascript-postamble () }
+    { search:javascript-postamble ($lux:http) }
     {
       let $qname := $params[@name='qname'] where not ($qname) return
       <script>$("#qname").focus()</script>
     }
   </body>/*
 
-return layout:outer('/index.xqy', $body)
+return layout:outer('/index.xqy', $body, $lux:http)
 };
 
 demo:search()

@@ -20,7 +20,7 @@ as document-node()?
 };
  
 declare function demo:get-document ($query, $pos, $sort)
-as document-node()?
+    as document-node()?
 {
     subsequence(lux:search ($query, (), $sort), $pos, 1)
 };
@@ -55,7 +55,7 @@ declare function demo:view ()
             lux:transform (doc($stylesheet-name), lux:highlight ($query, $doc), ("query", $query))
         else
             (<h3>{$doctype}</h3>,<textarea cols="80" rows="12">{$doc}</textarea>)
-    return layout:outer ('/view.xqy', (), ($pagination, $parts)) 
+    return layout:outer ('/view.xqy', (), ($pagination, $parts), $lux:http) 
 };
 
 demo:view()

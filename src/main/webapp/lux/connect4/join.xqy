@@ -51,7 +51,7 @@ declare function c4:join-game()
         Player {$name} joined;  
         <a href="view.xqy?game={$game-id}&amp;player={$new-name}">Proceed to game.</a>
       </div>
-      return layout:outer('/connect4/start.xqy', $body)
+      return layout:outer('/connect4/start.xqy', $body, $lux:http)
 };
 
 c4:join-game()

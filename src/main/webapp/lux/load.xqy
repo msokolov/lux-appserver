@@ -27,8 +27,8 @@ as node()*
     <ul id="loader-report">
       <li>Loading {count($urls)} documents</li>
     </ul>
-    <script src="{$config:root-url}js/jquery-1.8.2.min.js"></script>
-    <script src="{$config:root-url}js/load-document.js"></script>
+    <script src="{config:path('js/jquery-1.8.2.min.js', $lux:http)}"></script>
+    <script src="{config:path('js/load-document.js', $lux:http)}"></script>
     <script>{
       for $url in $urls
       return concat("load_document('", $url, "');&#10;")
@@ -41,4 +41,4 @@ let $result := if ($erase-all) then
   <p>Erase all not yet supported</p>
 else
   demo:load()
-return layout:outer ('/', $result)
+return layout:outer ('/', $result, $lux:http)
