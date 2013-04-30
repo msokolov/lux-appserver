@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>lux</groupId>
   <artifactId>lux-appserver</artifactId>
-  <version>0.6.1</version>
+  <version>0.7.2-SNAPSHOT</version>
   <name>Lux Application Server</name>
   <description>minimal web server that proxies xquery requests for Solr</description>
   <packaging>war</packaging>
@@ -10,27 +10,13 @@
     <dependency>
       <groupId>lux</groupId>
       <artifactId>lux</artifactId>
-      <version>0.6.1</version>
-    </dependency>
-  	<dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-server</artifactId>
-      <version>8.1.8.v20121106</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-servlets</artifactId>
-      <version>8.1.8.v20121106</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-servlet</artifactId>
-      <version>8.1.8.v20121106</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-client</artifactId>
-      <version>8.1.8.v20121106</version>
+      <version>0.7.2-SNAPSHOT</version>
+      <exclusions>
+      	<exclusion>
+      		<artifactId>servlet-api</artifactId>
+      		<groupId>javax.servlet</groupId>
+      	</exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>expath</groupId>
@@ -51,6 +37,12 @@
         <artifactId>httpunit</artifactId>
         <version>1.6.1</version>
         <scope>test</scope>
+        <exclusions>
+        	<exclusion>
+        		<artifactId>servlet-api</artifactId>
+        		<groupId>javax.servlet</groupId>
+        	</exclusion>
+        </exclusions>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -68,6 +60,7 @@
     	<artifactId>slf4j-api</artifactId>
     	<version>1.6.6</version>
     </dependency>
+<<<<<<< HEAD
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-webapp</artifactId>
@@ -81,6 +74,8 @@
       <version>1.7</version>
     </dependency>
     <!-- TODO: declare servlet-api as provided -->
+=======
+>>>>>>> 14549c5... removing embedded jetty app-server; need to do avoid conflict w/tomcat6 servlet-api:2.5
   </dependencies> 
   <build>
     <plugins>
@@ -167,6 +162,15 @@
           <type>jar</type>
         </dependency>
         </dependencies>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.tomcat.maven</groupId>
+        <artifactId>tomcat6-maven-plugin</artifactId>
+        <version>2.1</version>
+        <configuration>
+          <port>8080</port>
+          <path>/solr</path>
+        </configuration>
       </plugin>
       <!--
           We'd like to run the app server, and then the integration tests,
