@@ -60,12 +60,6 @@
     	<artifactId>slf4j-api</artifactId>
     	<version>1.6.6</version>
     </dependency>
-<<<<<<< HEAD
-    <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-webapp</artifactId>
-      <version>8.1.8.v20121106</version>
-    </dependency>
     <dependency>
       <!-- included since a number of our deployed solrconfigs call for it,
            even though it's not strictly required -->
@@ -73,9 +67,6 @@
       <artifactId>velocity</artifactId>
       <version>1.7</version>
     </dependency>
-    <!-- TODO: declare servlet-api as provided -->
-=======
->>>>>>> 14549c5... removing embedded jetty app-server; need to do avoid conflict w/tomcat6 servlet-api:2.5
   </dependencies> 
   <build>
     <plugins>
