@@ -41,10 +41,6 @@
       <param-value>/absolute/filesystem/path/to/repo</param-value>
     </init-param>
     -->
-    <init-param>
-      <param-name>org.expath.pkg.saxon.repo</param-name>
-      <param-value>c:/users/sokolov/documents/github/lux-appserver/xrepo</param-value>
-    </init-param>
      
     <!--  default for base-uri is the root of the webapp context folder;
           "resource:" is another possibility, which will retrieve from the classpath
