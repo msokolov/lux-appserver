@@ -11,3 +11,4 @@ lux.log
 
 # solr index
 solr/data/*
+/logs
