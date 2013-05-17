@@ -1,4 +1,5 @@
 #!/bin/sh
 LUX_HOME=${LUX_HOME:-.}
 cd $LUX_HOME
-java -cp .:target/classes:target/dependency/\*:lib\* lux.appserver.AppServer
+./bin/jetty.sh start
+

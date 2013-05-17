@@ -9,6 +9,13 @@
   </formats>
   <fileSets>
     <fileSet>
+      <directory>${project.basedir}/jetty-8.1.10</directory>
+      <outputDirectory>/</outputDirectory>
+      <includes>
+        <include>**</include>
+      </includes>
+    </fileSet>
+    <fileSet>
       <directory>${project.basedir}</directory>
       <outputDirectory>/</outputDirectory>
       <includes>
@@ -32,10 +39,10 @@
       </includes>
     </fileSet>
     <fileSet>
-      <directory>${project.basedir}/solr/conf</directory>
-      <outputDirectory>/solr/conf</outputDirectory>
+      <directory>${project.basedir}/solr</directory>
+      <outputDirectory>/solr</outputDirectory>
       <includes>
-        <include>*.xml</include>
+        <include>**/*.xml</include>
       </includes>
     </fileSet>
     <fileSet>
@@ -44,20 +51,6 @@
       <excludes>
         <exclude>*</exclude>
       </excludes>
-    </fileSet>
-    <fileSet>
-      <directory>${project.basedir}/src/test/webapp</directory>
-      <outputDirectory>webapps/demo</outputDirectory>
-      <includes>
-        <include>**</include>
-      </includes>
-    </fileSet>
-    <fileSet>
-      <directory>${project.basedir}/src/main/webapp</directory>
-      <outputDirectory>webapps/solr</outputDirectory>
-      <includes>
-        <include>**</include>
-      </includes>
     </fileSet>
     <fileSet>
       <directory>${project.basedir}/xrepo</directory>
@@ -73,9 +66,15 @@
         <include>**</include>
       </includes>
     </fileSet>
-    <fileSet>
-      <directory>${project.build.directory}/site</directory>
-      <outputDirectory>docs</outputDirectory>
-    </fileSet>
   </fileSets>
+  <files>
+    <!-- strip the version number from the included artifact
+         (so the jetty contexts.xml doesn't need to be updated)
+         (this is lux-appserver.war) -->
+    <file>
+      <source>${project.build.directory}/${artifactId}-${version}.${packaging}</source>
+      <outputDirectory>/</outputDirectory>
+      <destName>webapps/${artifactId}.${packaging}</destName>
+    </file>
+  </files>
 </assembly>

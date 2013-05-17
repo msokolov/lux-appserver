@@ -1,4 +1,5 @@
 #!/bin/sh
 LUX_HOME=${LUX_HOME:-.}
 echo LUX_HOME=$LUX_HOME
-java -cp $LUX_HOME:$LUX_HOME/lib/\* lux.appserver.AppServer
+$LUX_HOME/bin/jetty.sh start
+
