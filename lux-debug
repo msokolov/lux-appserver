@@ -1,4 +1,0 @@
-#!/bin/sh
-LUX_HOME=${LUX_HOME:-.}
-cd $LUX_HOME
-java -cp .:target/classes:../lux/target/classes:target/dependency/\*:lib\* lux.appserver.AppServer

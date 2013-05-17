@@ -1,1 +1,0 @@
-java -cp ".;lib\*" lux.appserver.AppServer
