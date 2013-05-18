@@ -32,13 +32,6 @@
       </includes>
     </fileSet>
     <fileSet>
-      <directory>${project.build.directory}/dependency</directory>
-      <outputDirectory>/lib</outputDirectory>
-      <includes>
-        <include>*.jar</include>
-      </includes>
-    </fileSet>
-    <fileSet>
       <directory>${project.basedir}/solr</directory>
       <outputDirectory>/solr</outputDirectory>
       <includes>

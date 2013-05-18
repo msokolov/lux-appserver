@@ -2,15 +2,29 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>lux</groupId>
   <artifactId>lux-appserver</artifactId>
-  <version>0.8.1-SNAPSHOT</version>
+  <version>0.8.0</version>
   <name>Lux Application Server</name>
   <description>minimal web server that proxies xquery requests for Solr</description>
   <packaging>war</packaging>
+  <description>Lux server bundle; includes Jetty configured with Lux/Solr webapp</description>
+  <url>http://luxdb.org/</url>
+  <licenses>
+    <license>Mozilla Public License Version 2.0</license>
+    <url>http://www.mozilla.org/MPL/2.0/</url>
+    <distribution>repo</distribution>
+  </licenses>
+  <scm>
+    <url>http://github.com/msokolov/lux-appserver</url>
+  </scm>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>lux</groupId>
       <artifactId>lux</artifactId>
-      <version>0.8.1-SNAPSHOT</version>
+      <version>0.8.0</version>
       <exclusions>
       	<exclusion>
       		<artifactId>servlet-api</artifactId>
@@ -201,39 +215,12 @@
       -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <version>2.6</version>
-        <executions>
-          <execution>
-            <id>copy-dependencies</id>
-            <phase>package</phase>
-            <goals>
-              <goal>copy-dependencies</goal>
-            </goals>
-            <configuration>
-              <excludeArtifactIds>antlr,httpunit,junit,xalan,hamcrest-core,dom4j,js,struts-core,struts-taglib,struts-tiles,xmlParserAPIs,xom,servlet-api</excludeArtifactIds>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
         <version>2.4</version>
         <configuration>
-          <!--
-              <descriptorRefs>
-              <descriptorRef>bin</descriptorRef>
-              </descriptorRefs>
-          -->
           <descriptors>
             <descriptor>assembly-bin.xml</descriptor>
           </descriptors>
-          <!--
-              <descriptorRefs>
-              <descriptorRef>jar-with-dependencies</descriptorRef>
-              </descriptorRefs>
-          -->
         </configuration>
       </plugin>
       <plugin>
@@ -286,37 +273,5 @@
         </dependencies>
       </plugin>
     </plugins>
-    <pluginManagement>
-      <plugins>
-        <!--  fix error about maven-dependency-plugin not being supported by m2eclipse
-             to package, must use command-line maven (although there may be a way to get
-             this working in Eclipse, I don't care to).
-        -->
-        <plugin>
-          <groupId>org.eclipse.m2e</groupId>
-          <artifactId>lifecycle-mapping</artifactId>
-          <version>1.0.0</version>
-          <configuration>
-            <lifecycleMappingMetadata>
-              <pluginExecutions>
-                <pluginExecution>
-                  <pluginExecutionFilter>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <versionRange>[2.0,)</versionRange>
-                    <goals>
-                      <goal>copy-dependencies</goal>
-                    </goals>
-                  </pluginExecutionFilter>
-                  <action>
-                    <ignore />
-                  </action>
-                </pluginExecution>
-              </pluginExecutions>
-            </lifecycleMappingMetadata>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
   </build>
 </project>
