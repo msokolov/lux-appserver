@@ -4,14 +4,15 @@
   <artifactId>lux-appserver</artifactId>
   <version>0.8.0</version>
   <name>Lux Application Server</name>
-  <description>minimal web server that proxies xquery requests for Solr</description>
   <packaging>war</packaging>
   <description>Lux server bundle; includes Jetty configured with Lux/Solr webapp</description>
   <url>http://luxdb.org/</url>
   <licenses>
-    <license>Mozilla Public License Version 2.0</license>
-    <url>http://www.mozilla.org/MPL/2.0/</url>
-    <distribution>repo</distribution>
+    <license>
+      <name>Mozilla Public License Version 2.0</name>
+      <url>http://www.mozilla.org/MPL/2.0/</url>
+      <distribution>repo</distribution>
+    </license>
   </licenses>
   <scm>
     <url>http://github.com/msokolov/lux-appserver</url>
