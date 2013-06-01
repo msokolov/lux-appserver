@@ -36,6 +36,7 @@
       <outputDirectory>/solr</outputDirectory>
       <includes>
         <include>**/*.xml</include>
+        <include>**/*.html</include>
       </includes>
     </fileSet>
     <fileSet>
