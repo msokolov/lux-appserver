@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>lux</groupId>
+  <groupId>org.luxdb</groupId>
   <artifactId>lux-appserver</artifactId>
-  <version>0.8.1</version>
+  <version>0.9.1-SNAPSHOT</version>
   <name>Lux Application Server</name>
   <packaging>war</packaging>
   <description>Lux server bundle; includes Jetty configured with Lux/Solr webapp</description>
@@ -23,9 +23,9 @@
   </properties>
   <dependencies>
     <dependency>
-      <groupId>lux</groupId>
+      <groupId>org.luxdb</groupId>
       <artifactId>lux</artifactId>
-      <version>0.8.1</version>
+      <version>0.9.1-SNAPSHOT</version>
       <exclusions>
       	<exclusion>
       		<artifactId>servlet-api</artifactId>

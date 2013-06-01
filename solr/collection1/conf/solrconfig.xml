@@ -1648,6 +1648,13 @@
       <str name="lux.contentType">text/html;charset=UTF-8</str>
       <str name="wt">lux</str>
     </lst>
+    <lst name="invariants">
+      <!-- Note: You should ALWAYS specify this parameter for handlers that
+           include AppServerComponent to avoid exposing files elsewhere on
+           the system.
+      -->
+      <str name="lux.baseUri">context:/lux</str>
+    </lst>
     <arr name="components">
       <str>lux-app-server</str>
       <str>stats</str>
