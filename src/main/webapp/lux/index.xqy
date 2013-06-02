@@ -34,7 +34,7 @@ declare function demo:snippet ($doc as node(), $uri as xs:string, $q as xs:strin
   as node()
 {
   let $title := ($doc/descendant::title/string(),$uri)[1]
-  let $hl := lux:highlight ($q, $doc)
+  let $hl := lux:highlight ($doc, $q)
   let $match := $hl/descendant::B[1]
   let $length := (80 - string-length($match)) div 2
   let $left-text := demo:snip-left ($match, $length)
