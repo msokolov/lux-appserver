@@ -32,7 +32,7 @@
       </includes>
     </fileSet>
     <fileSet>
-      <!-- include extra jars, including expath -->
+      <!-- include any extra jars for the Solr runtime -->
       <directory>${project.basedir}/lib</directory>
       <outputDirectory>/lib</outputDirectory>
       <includes>
