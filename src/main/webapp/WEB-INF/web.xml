@@ -48,7 +48,7 @@
     <!-- 
     <init-param>
       <param-name>base-uri</param-name>
-      <param-value>resource:</param-value>
+      <param-value>context:</param-value>
     </init-param>
      -->
   </filter>
