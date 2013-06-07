@@ -50,6 +50,7 @@ declare function search:sort-control ($params as element(param)*)
   let $sort := $params[@name="sort"]
   let $options := (
       <option value="">in document order</option>,
+      <option value="lux:score">by relevance</option>,
       <option value="title">by title</option>,
       <option value="title descending">by title, reversed</option> )
   return search:select-control ("sort", "order by", $options, $sort)

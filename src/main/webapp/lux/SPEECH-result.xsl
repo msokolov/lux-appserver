@@ -24,7 +24,7 @@
             <xsl:sequence select="$found-term/.." />
           </xsl:variable>
           <a href="view.xqy?uri={$url}&amp;enq={$enquery}#speech{@speech}">
-            <xsl:if test="$snippet/ancestor-or-self::LINE/preceding-sibling::LINE">
+            <xsl:if test="not($snippet) or $snippet/ancestor-or-self::LINE/preceding-sibling::LINE">
               <xsl:copy-of select="$title" />
               <xsl:if test="$snippet/ancestor-or-self::LINE/preceding-sibling::LINE[2]">
                 ...
