@@ -15,7 +15,7 @@
           <xsl:variable name="title">
             <xsl:choose>
               <xsl:when test="$query and $query != '*:*'">
-                <xsl:sequence select="lux:highlight($query, .)/descendant::B[1]/.." />
+                <xsl:sequence select="lux:highlight(., $query)/descendant::B[1]/.." />
               </xsl:when>
               <xsl:otherwise>
                 <xsl:sequence select="LINE[1]/node()" />

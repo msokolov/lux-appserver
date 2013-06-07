@@ -48,7 +48,7 @@
     <!-- 
     <init-param>
       <param-name>base-uri</param-name>
-      <param-value>resource:</param-value>
+      <param-value>context:</param-value>
     </init-param>
      -->
   </filter>
@@ -100,7 +100,8 @@
     <filter-name>SolrRequestFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-    <servlet>
+
+  <servlet>
     <servlet-name>Zookeeper</servlet-name>
     <servlet-class>org.apache.solr.servlet.ZookeeperInfoServlet</servlet-class>
   </servlet>

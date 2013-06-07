@@ -35,7 +35,7 @@
        that you fully re-index after changing this setting as it can
        affect both how text is indexed and queried.
   -->
-  <luceneMatchVersion>LUCENE_41</luceneMatchVersion>
+  <luceneMatchVersion>LUCENE_42</luceneMatchVersion>
 
   <!-- lib directives can be used to instruct Solr to load an Jars identified
        and use them to resolve any "plugins" specified in your solrconfig.xml or
@@ -1649,6 +1649,13 @@
     <lst name="defaults">
       <str name="lux.contentType">text/html;charset=UTF-8</str>
       <str name="wt">lux</str>
+    </lst>
+    <lst name="invariants">
+      <!-- Note: You should ALWAYS specify this parameter for handlers that
+           include AppServerComponent to avoid exposing files elsewhere on
+           the system.
+      -->
+      <str name="lux.baseUri">context:/lux</str>
     </lst>
     <arr name="components">
       <str>lux-app-server</str>

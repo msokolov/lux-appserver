@@ -84,7 +84,7 @@ public class AppServerIT {
     @Test
     public void testResultFormat () throws Exception {
         verifyMultiThreadedWrites(); // store some test data
-        String path = (XQUERY_PATH + "?q=(doc('/test/1'),doc('/test/2'))&lux.content-type=text/xml&wt=lux");
+        String path = (XQUERY_PATH + "?q=(doc('/test/1'),doc('/test/2'))&lux.contentType=text/xml&wt=lux");
         WebResponse httpResponse = httpclient.getResponse(path);
     	assertEquals ("<results><doc><title id=\"1\">100</title><test>cat</test></doc><doc><title id=\"2\">99</title><test>cat</test></doc></results>", httpResponse.getText());
     }

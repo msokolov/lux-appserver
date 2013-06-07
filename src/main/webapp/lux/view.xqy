@@ -52,7 +52,7 @@ declare function demo:view ()
     let $stylesheet-name := concat("file:view-", $doctype, ".xsl")
     let $parts := 
         if (doc-available ($stylesheet-name)) then
-            lux:transform (doc($stylesheet-name), lux:highlight ($query, $doc), ("query", $query))
+            lux:transform (doc($stylesheet-name), lux:highlight ($doc, $query), ("query", $query))
         else
             (<h3>{$doctype}</h3>,<textarea cols="80" rows="12">{$doc}</textarea>)
     return layout:outer ('/view.xqy', (), ($pagination, $parts), $lux:http) 
