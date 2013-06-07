@@ -7,7 +7,7 @@ declare function layout:render-nav ($current-url as xs:string)
 let $nav := (
   <item url="index.xqy">search</item>, 
   <item url="query.xqy">query</item>, 
-  <item url="read-ibiblio.xqy">load ibiblio (shakespeare)</item>
+  <item url="read-ibiblio.xqy">load shakespeare</item>
 )
 return <div><ul class="hlist">{
   for $item in $nav 

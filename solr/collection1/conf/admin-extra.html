@@ -1,1 +1,7 @@
-<a style='font: 32px/4.8em "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif;' href="/collection1/lux/index.xqy"> LUX <img src="/lux/img/sunflwor52.png"/></a>
+<a id="lux-link" style='font: 32px/4.8em "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif;' href="#"> LUX <img src="lux/img/sunflwor52.png"/></a>
+<script>
+  // solr admin encodes the core name as a 'hash' on the URL
+    var core = location.hash.substring(2);
+    var url = core + "/lux/index.xqy";
+    $("#lux-link").attr("href", url)
+</script>
