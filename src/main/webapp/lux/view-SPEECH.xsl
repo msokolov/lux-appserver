@@ -11,7 +11,7 @@
   <xsl:template match="/SPEECH">
     <!--  get the scene in which this speech appears as="document-node(element(SCENE))"  -->
     <xsl:variable name="scene" as="document-node(element(SCENE))" select="doc(replace(base-uri(.), '/[^/]+$', ''))" />
-    <xsl:apply-templates select="lux:highlight($query, $scene)" />
+    <xsl:apply-templates select="lux:highlight($scene, $query)" />
     <script>
        location.hash = "#<xsl:value-of select="concat('speech',@speech)" />";
     </script>

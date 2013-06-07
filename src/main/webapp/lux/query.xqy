@@ -30,7 +30,7 @@ declare function demo:main () {
       <div id="right">
         <form action="../xquery" id="search" name="search" method="post" target="results">
           <input type="hidden" name="wt" value="lux" />
-          <input type="hidden" name="lux.content-type" value="text/xml" />
+          <input type="hidden" name="lux.contentType" value="text/xml" />
           <input type="hidden" name="lux.xml-xsl-stylesheet" value="{config:path('chrome-xml.xsl', $lux:http)}" />
           <textarea id="q" name="q" cols="80" rows="10">{$query}</textarea>
           <br/>

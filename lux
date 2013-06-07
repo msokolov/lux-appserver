@@ -1,5 +1,0 @@
-#!/bin/sh
-LUX_HOME=${LUX_HOME:-.}
-cd $LUX_HOME
-./bin/jetty.sh start
-
