@@ -12,18 +12,27 @@
       <div class="speech">
         <span>
           <xsl:variable name="url" select="replace(base-uri(/), '/[^/]+$', '')" />
-          <xsl:variable name="title">
-            <xsl:choose>
-              <xsl:when test="$query and $query != '*:*'">
-                <xsl:sequence select="lux:highlight(., $query)/descendant::B[1]/.." />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:sequence select="LINE[1]/node()" />
-              </xsl:otherwise>
-            </xsl:choose>
+          <xsl:variable name="found-term" as="element(B)?">
+            <xsl:if test="$query and $query != '*:*'">
+              <xsl:sequence select="lux:highlight(., $query)/descendant::B[1]" />
+            </xsl:if>
           </xsl:variable>
-          <a href="view.xqy?uri={$url}&amp;enq={$enquery}#speech{@speech}"><xsl:copy-of select="$title" /></a>
-          <xsl:if test="LINE[2]"> ...</xsl:if>
+          <xsl:variable name="title" as="node()*">
+            <xsl:sequence select="LINE[1]/node()" />
+          </xsl:variable>
+          <xsl:variable name="snippet" as="element()?">
+            <xsl:sequence select="$found-term/.." />
+          </xsl:variable>
+          <a href="view.xqy?uri={$url}&amp;enq={$enquery}#speech{@speech}">
+            <xsl:if test="$snippet/ancestor-or-self::LINE/preceding-sibling::LINE">
+              <xsl:copy-of select="$title" />
+              <xsl:if test="$snippet/ancestor-or-self::LINE/preceding-sibling::LINE[2]">
+                ...
+              </xsl:if>
+            </xsl:if>
+            <xsl:copy-of select="$snippet" />
+          </a>
+          <xsl:if test="$snippet/following-sibling::LINE"> ...</xsl:if>
         </span>
       </div>
       <div class="speech-info">
