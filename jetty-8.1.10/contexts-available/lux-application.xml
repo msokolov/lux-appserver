@@ -1,0 +1,9 @@
+<Configure id="testapp" class="org.eclipse.jetty.webapp.WebAppContext">
+  <!-- Edit these two settings to reflect your application's intended location -->
+  <Set name="contextPath">/core-name/application-name</Set>
+  <Set name="resourceBase">/full/path/to/application</Set>
+
+  <Set name="war"><SystemProperty name="jetty.home" default="."/>/webapps/lux-appserver.war</Set>
+  <Set name="extractWAR">true</Set>
+
+</Configure>

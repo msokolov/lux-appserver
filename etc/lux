@@ -6,13 +6,17 @@ if [ "$1" == "stop" ]
 then
   $LUX_HOME/bin/jetty.sh stop
 
+elif [ "$1" == "restart" ]
+then
+  $LUX_HOME/bin/jetty.sh restart
+
 elif [ "$1" == "" -o "$1" == "start" ]
 then
   export JAVA_OPTIONS="-Xmx1024m -Dorg.expath.pkg.saxon.repo=$LUX_HOME/xrepo"
   $LUX_HOME/bin/jetty.sh start
 
 else
-  echo 'usage: lux [start | stop]'
+  echo 'usage: lux [start | restart | stop]'
 fi
 
 

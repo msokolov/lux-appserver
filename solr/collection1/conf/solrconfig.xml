@@ -1643,7 +1643,6 @@
       <str>xquery</str>
       <str>stats</str>
       <str>debug</str>
-      <!-- highlight? facet? -->
     </arr>
   </requestHandler>
 
@@ -1663,7 +1662,6 @@
       <str>lux-app-server</str>
       <str>stats</str>
       <str>debug</str>
-      <!-- highlight? facet? -->
     </arr>
   </requestHandler>
   
