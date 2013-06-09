@@ -13,7 +13,7 @@ declare variable $lux:http as document-node() external;
 
 declare function demo:search-results ($query, $start as xs:integer, $page-size as xs:integer, $sort as xs:string?, $total as xs:integer)
 {
-  for $doc at $index in subsequence(lux:search ($query, (), $sort), $start, $page-size)
+  for $doc at $index in subsequence(lux:search ($query, $sort), $start, $page-size)
   let $doctype := name($doc/*)
   let $stylesheet-name := concat("file:", $doctype, "-result.xsl")
   let $enquery := search:encode-query(($lux:http/http/params/param, 

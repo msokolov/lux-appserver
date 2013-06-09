@@ -22,7 +22,7 @@ as document-node()?
 declare function demo:get-document ($query, $pos, $sort)
     as document-node()?
 {
-    subsequence(lux:search ($query, (), $sort), $pos, 1)
+    subsequence(lux:search ($query, $sort), $pos, 1)
 };
 
 declare function demo:search-at-pos ($pos, $params)
