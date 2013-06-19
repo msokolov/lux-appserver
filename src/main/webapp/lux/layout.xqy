@@ -28,6 +28,7 @@ declare function layout:outer ($current-url as xs:string, $body as node()*, $hea
   <head>
     <title>Lux Demo</title>
     <link href="{config:path('styles.css', $http)}" rel="stylesheet" />
+    <script src="{config:path('js/jquery-1.8.2.min.js', $http)}"></script>
   </head>
   <body>
     <div id="masthead">

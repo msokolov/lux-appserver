@@ -54,7 +54,7 @@ declare function demo:view ()
         if (doc-available ($stylesheet-name)) then
             lux:transform (doc($stylesheet-name), lux:highlight ($doc, $query), ("query", $query))
         else
-            (<h3>{$doctype}</h3>,<textarea cols="80" rows="12">{$doc}</textarea>)
+            (<h3>{$doctype}</h3>, <div id="results">{lux:transform(doc('file:chrome-xml.xsl'), $doc, ('whole-page', 'no'))}</div>)
     return layout:outer ('/view.xqy', (), ($pagination, $parts), $lux:http) 
 };
 

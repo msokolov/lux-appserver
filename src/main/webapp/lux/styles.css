@@ -71,6 +71,14 @@ div.speech-container { margin-bottom: 1em; }
 .selected { font-weight: bold; }
 .delete-query { color: red }
 
+/******** chrome xml hack styles ********/
+.xml-element { margin-left: 1em; }
+.tag { color: #226622; }
+.tag:hover { text-decoration: underline }
+.attr-name { color: #618; font-weight: normal }
+.attr-value { color: blue; font-style: italic }
+.collapsed { font-weight: bold; }
+
 /************ shakespeare scene display *******/
 .scene { margin-left: 1em }
 .hi { background: #ff0; font-weight: bold }
@@ -78,3 +86,4 @@ ul.speech { list-style-type: none; }
 ul.speech li { display: inline;  }
 #pagination a { padding-left: 1em; } 
 .scene { position: absolute; top: 120px; bottom: 0px; left: 0px; right: 0px; overflow: auto } 
+
