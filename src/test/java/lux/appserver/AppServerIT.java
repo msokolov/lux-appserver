@@ -28,7 +28,7 @@ import com.meterware.httpunit.WebResponse;
  */
 public class AppServerIT {
 
-    private final String APP_SERVER_XQUERY_PATH = "http://localhost:8080/solr/collection1/lux";
+    private final String APP_SERVER_XQUERY_PATH = "http://localhost:8080/collection1/lux";
     private final String APP_SERVER_PATH = "http://localhost:8080/lux";
     private final String XQUERY_PATH = "http://localhost:8080/collection1/xquery";
     private static WebClient httpclient;
