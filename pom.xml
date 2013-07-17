@@ -25,7 +25,7 @@
     <dependency>
       <groupId>org.luxdb</groupId>
       <artifactId>lux</artifactId>
-      <version>0.10.0</version>
+      <version>0.10.2-SNAPSHOT</version>
       <exclusions>
       	<exclusion>
       		<artifactId>servlet-api</artifactId>
