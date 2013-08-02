@@ -71,6 +71,10 @@ div.speech-container { margin-bottom: 1em; }
 .selected { font-weight: bold; }
 .delete-query { color: red }
 
+/******** view.xqy raw XML view page styles ******/
+#xml-view { width: 98%; margin: 1em; padding: 0.2em; 
+            background: #fff; border: 1px solid black }
+
 /******** chrome xml hack styles ********/
 .xml-element { margin-left: 1em; }
 .tag { color: #226622; }
