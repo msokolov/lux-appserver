@@ -1617,6 +1617,8 @@
     </lst>
     <str name="strip-namespaces">no</str>
     <!-- <str name="xml-format">tiny</str> -->
+    <processor class="solr.DistributedUpdateProcessorFactory" />
+    <!-- must come *after* the DistributingUpdateProcessor for transaction log replay to work -->
     <processor class="lux.solr.LuxUpdateProcessorFactory" />
     <processor class="solr.LogUpdateProcessorFactory" />
     <processor class="solr.RunUpdateProcessorFactory" />
