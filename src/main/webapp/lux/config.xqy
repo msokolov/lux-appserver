@@ -1,5 +1,11 @@
 module namespace config = "http://luxdb.net/demo/config";
 
-declare function config:path ($path, $req as document-node(element(http))) {
-    concat($req/http/context-path, "/lux/", $path) 
+declare namespace http="http://expath.org/ns/webapp";
+
+declare function config:path ($path, $req as document-node()) {
+    if ($req/http) then
+        concat($req/http/context-path, "/lux/", $path) 
+    else
+        concat($req/http:request/http:context-root, "/lux/", $path) 
 };
+
