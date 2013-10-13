@@ -36,8 +36,6 @@ declare function demo:main () {
           <br/>
           <input type="submit" value="go" />   
           (use ctrl-Enter)
-          <input type="button" value="save new" onclick="saveQuery()" />
-          (max 10)
         </form>
       </div>
     </div>

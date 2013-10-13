@@ -18,17 +18,18 @@ function selectQuery (n) {
 }
 
 function setCurrentQuery (n) {
-    console.log ("setCurrentQuery " + n);
-    console.log (" found " + $('#query-history>li').length + " existing queries");
+    //console.log ("setCurrentQuery " + n);
+    //console.log (" found " + $('#query-history>li').length + " existing queries");
     var count = getQueryCount ();
     $('#query-history>li').removeClass('selected');
-    console.log (" ther are " + $('#query-history li').length + " queries now");
-    console.log (" selecting query " + $('#query-history>li').eq(count - n - 1).length);
+    //console.log (" there are " + $('#query-history li').length + " queries now");
+    //console.log (" selecting query " + $('#query-history>li').eq(count - n - 1).length);
     $('#query-history>li').eq(count - n - 1).addClass('selected');
+    localStorage['lux-selected-query-index'] = n;
 }
 
 function saveQuery () {
-    console.log ("saveQuery(): adding new query");
+    //console.log ("saveQuery(): adding new query");
     var q = $('#q').val();
     // add new
     var n = localStorage['lux-query-history-size'];
@@ -43,7 +44,7 @@ function saveQuery () {
 
 function updateQuery () {
     // update an existing query
-    console.log ("updateQuery()");
+    //console.log ("updateQuery()");
     var q = $('#q').val();
     var selection = $('#query-history>li.selected');
     var i = selection.index();
@@ -60,7 +61,7 @@ function formatQuery (q) {
 }
 
 function setQuery (n, q) {
-    console.log ("setQuery " + n);
+    //console.log ("setQuery " + n);
     var count = localStorage['lux-query-history-size'];
     if (n >= count) {
         localStorage['lux-query-history-size'] = parseInt(n) + 1;
@@ -101,7 +102,7 @@ function insertQueryMenu (i, q) {
 function populateQueryHistory () {
     $('#query-history').children().remove();
     var n = getQueryCount();
-    console.log ("populate " + n);
+    //console.log ("populate " + n);
     /** get all the queries, put them in an array, and store them again.
         This way we can clean out any gaps or weirdness that may have occurred
         since local storage is not an array or anything.
@@ -121,6 +122,12 @@ function populateQueryHistory () {
         setQuery (i, q);
         insertQueryMenu (i, q);
     }
+    for (i = queries.length; i < 10; i++) {
+        q = "(: query " + (10-i) + " :)"
+        setQuery (i, q);
+        insertQueryMenu (i, q);
+    }
+    return queries;
 }
 
 $('#search').submit(function(event) {
@@ -139,7 +146,13 @@ $('#q').keydown(function(event) {
 
 $('#q').focus();
 
-populateQueryHistory();
+var queries = populateQueryHistory();
 if (queries.length > 0) {
-    selectQuery (queries.length-1);
+    var n = localStorage['lux-selected-query-index'];
+    //console.log ("selected query=" + n);
+    if (n != null) {
+        selectQuery (n);
+    } else {
+        selectQuery (queries.length-1);
+    }
 }
