@@ -22,7 +22,7 @@ declare function layout:outer ($current-url as xs:string, $body as node()*, $htt
     layout:outer($current-url, $body, (), $http)
 };
 
-declare function layout:outer ($current-url as xs:string, $body as node()*, $header as node()*, $http as document-node( element(http))) 
+declare function layout:outer ($current-url as xs:string, $body as node()*, $header as node()*, $http as document-node()) 
 {
 <html>
   <head>
