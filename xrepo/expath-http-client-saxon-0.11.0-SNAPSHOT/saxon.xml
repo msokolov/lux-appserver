@@ -2,7 +2,6 @@
 
    <jar>jar/expath-httpclient-java-0.11.0-SNAPSHOT.jar</jar>
    <jar>jar/expath-httpclient-saxon-0.11.0-SNAPSHOT.jar</jar>
-   <!-- TODO: Here, really? -->
    <jar>lib/commons-codec-1.6.jar</jar>
    <jar>lib/commons-logging-1.1.1.jar</jar>
    <jar>lib/httpclient-4.3.1.jar</jar>

@@ -4,7 +4,9 @@
          version="0.11.0-SNAPSHOT"
          spec="1.0">
 
-   <title>EXPath HTTP Client</title>
+   <title>EXPath HTTP Client for Saxon</title>
+
+   <home>http://expath.org/modules/http-client/</home>
 
    <dependency processor="http://saxon.sf.net/he"/>
 
