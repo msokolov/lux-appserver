@@ -139,6 +139,15 @@
       <param-value>${context}/#/~logging</param-value>
     </init-param>
   </servlet>
+
+  <servlet>
+    <servlet-name>SolrRestApi</servlet-name>
+    <servlet-class>org.restlet.ext.servlet.ServerServlet</servlet-class>
+    <init-param>
+      <param-name>org.restlet.application</param-name>
+      <param-value>org.apache.solr.rest.SolrRestApi</param-value>
+    </init-param>
+  </servlet>
   
   <servlet-mapping>
     <servlet-name>RedirectOldAdminUI</servlet-name>
@@ -167,6 +176,11 @@
     <servlet-name>LoadAdminUI</servlet-name>
     <url-pattern>/admin.html</url-pattern>
   </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>SolrRestApi</servlet-name>
+    <url-pattern>/schema/*</url-pattern>
+  </servlet-mapping>
   
   <mime-mapping>
     <extension>.xsl</extension>
@@ -175,10 +189,9 @@
   </mime-mapping>
 
   <welcome-file-list>
-    <welcome-file>index.jsp</welcome-file>
     <welcome-file>admin.html</welcome-file>
-    <welcome-file>index.html</welcome-file>
     <welcome-file>index.xqy</welcome-file>
+    <welcome-file>index.html</welcome-file>
   </welcome-file-list>
   
   <mime-mapping>
