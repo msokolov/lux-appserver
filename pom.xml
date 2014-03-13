@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.luxdb</groupId>
   <artifactId>lux-appserver</artifactId>
-  <version>1.0.2-SNAPSHOT</version>
+  <version>1.0.2</version>
   <name>Lux Application Server</name>
   <packaging>war</packaging>
   <description>Lux server bundle; includes Jetty configured with Lux/Solr webapp</description>
@@ -25,7 +25,7 @@
     <dependency>
       <groupId>org.luxdb</groupId>
       <artifactId>lux</artifactId>
-      <version>1.0.2-SNAPSHOT</version>
+      <version>1.0.2</version>
       <exclusions>
       	<exclusion>
       		<artifactId>servlet-api</artifactId>
